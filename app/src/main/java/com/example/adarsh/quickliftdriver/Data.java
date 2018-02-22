@@ -5,7 +5,7 @@ package com.example.adarsh.quickliftdriver;
  */
 
 public class Data {
-    double st_lat,st_lng,en_lat,en_lng;
+    double st_lat,st_lng,en_lat,en_lng,d_lat,d_lng;
     String customer_id;
     Integer accept=0;
 
@@ -22,6 +22,22 @@ public class Data {
 
     public double getSt_lat() {
         return st_lat;
+    }
+
+    public double getD_lat() {
+        return d_lat;
+    }
+
+    public void setD_lat(double d_lat) {
+        this.d_lat = d_lat;
+    }
+
+    public double getD_lng() {
+        return d_lng;
+    }
+
+    public void setD_lng(double d_lng) {
+        this.d_lng = d_lng;
     }
 
     public void setSt_lat(double st_lat) {

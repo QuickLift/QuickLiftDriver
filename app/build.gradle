@@ -37,6 +37,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:11.8.0'
     compile 'com.google.android.gms:play-services:11.8.0'
     compile 'com.firebase:geofire-android:2.2.0'
+    compile 'com.github.jd-alexander:library:1.1.0'
     testCompile 'junit:junit:4.12'
 }
 

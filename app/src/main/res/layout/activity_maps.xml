@@ -11,6 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <fragment
+        android:id="@+id/place_autocomplete_fragment"
+        android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"/>
+
     <LinearLayout
         android:id="@+id/lin"
         android:layout_width="match_parent"
@@ -92,5 +99,15 @@
         android:hint="Distance ...."
         android:visibility="gone"
         android:textColor="@android:color/black"/>
+
+    <Button
+        android:id="@+id/canceltrip"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:onClick="cancel_trip"
+        android:text="Cancel Trip"
+        android:textColor="#fdfefe"
+        android:background="#850000ff"
+        android:visibility="gone"/>
 
 </RelativeLayout>
