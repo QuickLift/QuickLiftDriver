@@ -15,6 +15,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,17 +36,25 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class Welcome extends AppCompatActivity {
     public static final int RequestPermissionCode = 1;
+    private static LinearLayout ride,profile,account,help;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        profile = (LinearLayout)findViewById(R.id.profile);
+        ride = (LinearLayout)findViewById(R.id.ride);
+        account = (LinearLayout)findViewById(R.id.account);
+        help = (LinearLayout)findViewById(R.id.help);
+
         // variables storing function values returned by network connection functions
         boolean status1 = haveNetworkConnection();
         boolean status2 = hasActiveInternetConnection();
 
-        // checking user permission
+//         checking user permission
         if(!checkPermission())
         {
             appendLog(getCurrentTime()+"Gathering permissions status:0");
@@ -61,14 +70,46 @@ public class Welcome extends AppCompatActivity {
             if(status1 && status2)
             {
                 appendLog(getCurrentTime()+"Gathering network information status:1");
-                Intent i = new Intent(this,Login.class);
-                startActivity(i);
+                Toast.makeText(this, "Active Internet connection", Toast.LENGTH_SHORT).show();
+                //Intent i = new Intent(this,Login.class);
+                //startActivity(i);
             }
             else{
                 Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
             }
         }
 
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Welcome.this,ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        ride.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Welcome.this,RidesActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        account.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Welcome.this,AccountActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Welcome.this,HelpActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private boolean haveNetworkConnection() {

@@ -88,6 +88,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private PlaceAutocompleteFragment autocompleteFragment;
     private Marker marker_cur;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +99,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             accept=(Button)findViewById(R.id.accept);
             reject=(Button)findViewById(R.id.reject);
             lin=(LinearLayout)findViewById(R.id.lin);
+
             log_id=getApplicationContext().getSharedPreferences("Login",MODE_PRIVATE);
             db=FirebaseDatabase.getInstance().getReference("CustomerRequests/"+log_id.getString("id",null)+"/Info");
 
@@ -568,6 +570,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 geoFire.setLocation(userId,new GeoLocation(location.getLatitude(),location.getLongitude()));
             }
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        initMap();
     }
 
     @Override

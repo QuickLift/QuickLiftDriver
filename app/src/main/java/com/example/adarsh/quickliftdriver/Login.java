@@ -121,7 +121,7 @@ public class Login extends AppCompatActivity {
             editor.putString("id",user.getUid());
             editor.putString("ride","");
             editor.commit();
-            startActivity(new Intent(Login.this,MapsActivity.class));
+            startActivity(new Intent(Login.this,Welcome.class));
             finish();
         } else {
             mPhone.setText("");

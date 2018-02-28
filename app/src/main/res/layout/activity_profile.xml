@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="5dp"
+    android:orientation="vertical"
+    tools:context="com.example.adarsh.quickliftdriver.ProfileActivity">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/profile"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"/>
+    <TextView
+        android:id="@+id/driver_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Driver Name"
+        android:gravity="center_horizontal"
+        android:layout_margin="3dp"
+        android:layout_below="@+id/image"/>
+    <TextView
+        android:id="@+id/driver_contact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="9678436389"
+        android:layout_below="@+id/driver_name"
+        android:gravity="center_horizontal"/>
+    <RatingBar
+        android:id="@+id/rateBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/driver_contact"/>
+    <View
+        android:id="@+id/hr_line"
+        android:layout_below="@+id/rateBar"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="#000000"/>
+
+    <EditText
+        android:id="@+id/mobile_num"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:minEms="10"
+        android:hint="Mobile Number"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/hr_line"/>
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:layout_marginTop="10dp"
+        android:hint="Email ID"
+        android:layout_below="@id/mobile_num"/>
+    <EditText
+        android:id="@+id/address"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginTop="10dp"
+        android:hint="Address"
+        android:gravity="start"
+        android:layout_below="@id/email"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:layout_below="@id/address"
+        android:layout_marginLeft="20dp"
+        android:layout_alignParentLeft="true"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Confirm"
+        android:layout_below="@id/address"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"/>
+
+</RelativeLayout>
