@@ -609,7 +609,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             last_ride.put("status","");
 
             LastRide.push().setValue(last_ride);
-            
+
             startActivity(new Intent(this,FeedbackActivity.class));
             finish();
         }
@@ -630,6 +630,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             }
         }else if (requestCode == 2){
             if (resultCode == Activity.RESULT_OK){
+                cancel.setVisibility(View.GONE);
                 start_trip.setVisibility(View.GONE);
                 drop.setVisibility(View.VISIBLE);
                 Toast.makeText(this, "OTP entered", Toast.LENGTH_SHORT).show();
