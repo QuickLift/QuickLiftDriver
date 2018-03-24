@@ -19,7 +19,9 @@
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:hint="Office Address"
+        android:text="IF 254,I Block\nIttina Neela Apartment\nBengaluru\nKarnataka"
         android:gravity="start"
+        android:editable="false"
         android:layout_below="@+id/office_image"/>
 
     <LinearLayout
@@ -32,12 +34,16 @@
         <EditText
             android:layout_width="wrap_content"
             android:hint="Office Contact"
+            android:text="9678436389"
+            android:editable="false"
             android:layout_height="match_parent"
             android:layout_weight="2.4"/>
         <ImageButton
+            android:id="@+id/call_office"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
+            android:background="@color/front_color"
             android:src="@drawable/ic_call"/>
     </LinearLayout>
     <LinearLayout
@@ -50,12 +56,37 @@
         <EditText
             android:layout_width="wrap_content"
             android:hint="Center Contact"
+            android:text="9678436389"
+            android:editable="false"
             android:layout_height="match_parent"
             android:layout_weight="2.4"/>
         <ImageButton
+            android:id="@+id/call_center"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
+            android:background="@color/front_color"
             android:src="@drawable/ic_call"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/fare_charge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/contact_center"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true">
+        <Button
+            android:id="@+id/fare_button"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/front_color"
+            android:text="Fare &amp; Charges"/>
+        <TextView
+            android:id="@+id/fare_text"
+            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 </RelativeLayout>

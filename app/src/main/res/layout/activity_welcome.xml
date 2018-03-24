@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,11 +14,29 @@
         android:layout_centerHorizontal="true"
         />
     <Switch
+        android:id="@+id/login_switch"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/image"
         android:layout_marginTop="30dp"
-        android:layout_marginLeft="37dp"/>
+        android:layout_marginLeft="24dp"/>
+    <TextView
+        android:id="@+id/login_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logout"
+        android:textSize="14sp"
+        android:layout_toRightOf="@id/login_switch"
+        android:layout_marginTop="33dp"/>
+    <TextView
+        android:id="@+id/login_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Duration"
+        android:textSize="14sp"
+        android:layout_toRightOf="@id/image"
+        android:layout_below="@id/login_switch"
+        android:layout_marginLeft="45dp"/>
     <TextView
         android:id="@+id/driver_name"
         android:layout_width="match_parent"
@@ -27,12 +44,14 @@
         android:text="Driver Name"
         android:gravity="center_horizontal"
         android:layout_margin="3dp"
+        android:textSize="18sp"
         android:layout_below="@+id/image"/>
     <TextView
         android:id="@+id/driver_contact"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="9678436389"
+        android:textSize="18sp"
         android:layout_below="@+id/driver_name"
         android:gravity="center_horizontal"/>
 
@@ -41,6 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:numStars="5"
+        style="@style/MyRatingBar"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/driver_contact"/>
 
@@ -58,6 +78,7 @@
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:scrollbars="none"
         android:id="@+id/detail">
 
         <LinearLayout
@@ -72,12 +93,6 @@
                 android:background="@drawable/round_button"
                 android:gravity="center"
                 android:orientation="vertical">
-
-                <!--<de.hdodenhof.circleimageview.CircleImageView-->
-                    <!--android:layout_width="60dp"-->
-                    <!--android:layout_height="60dp"-->
-                    <!--android:layout_gravity="center_horizontal"-->
-                    <!--android:src="@drawable/profile" />-->
                 <TextView
                     android:layout_marginTop="4dp"
                     android:layout_width="60dp"
@@ -100,12 +115,6 @@
                 android:background="@drawable/round_button"
                 android:gravity="center"
                 android:orientation="vertical">
-
-                <!--<de.hdodenhof.circleimageview.CircleImageView-->
-                    <!--android:layout_width="60dp"-->
-                    <!--android:layout_height="60dp"-->
-                    <!--android:layout_gravity="center_horizontal"-->
-                    <!--android:src="@drawable/profile" />-->
                 <TextView
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
@@ -126,12 +135,6 @@
                 android:background="@drawable/round_button"
                 android:gravity="center"
                 android:orientation="vertical">
-
-                <!--<de.hdodenhof.circleimageview.CircleImageView-->
-                    <!--android:layout_width="60dp"-->
-                    <!--android:layout_height="60dp"-->
-                    <!--android:layout_gravity="center_horizontal"-->
-                    <!--android:src="@drawable/profile" />-->
                 <TextView
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
@@ -154,18 +157,20 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="364dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimaryDark">
+        android:background="@color/back_color">
 
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorPrimary">
+            android:background="@color/back_color"
+            android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:padding="10dp"
+                android:background="@color/back_color"
                 android:layout_gravity="center_horizontal">
 
                 <LinearLayout
@@ -173,6 +178,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:background="@color/back_color"
                     android:orientation="vertical">
 
                     <TextView
@@ -197,6 +203,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:background="@color/back_color"
                     android:layout_marginLeft="10dp"
                     android:orientation="vertical">
 
@@ -214,7 +221,7 @@
                         android:layout_height="80dp"
                         android:layout_gravity="center_horizontal"
                         android:background="@drawable/round_button"
-                        android:src="@drawable/profile" />
+                        android:src="@drawable/ic_action_ride" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -222,6 +229,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:background="@color/back_color"
                     android:orientation="vertical">
 
                     <TextView
@@ -238,7 +246,7 @@
                         android:layout_height="80dp"
                         android:layout_gravity="center_horizontal"
                         android:background="@drawable/round_button"
-                        android:src="@drawable/profile" />
+                        android:src="@drawable/ic_account_info" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -246,6 +254,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:background="@color/back_color"
                     android:orientation="vertical">
 
                     <TextView
@@ -262,7 +271,7 @@
                         android:layout_height="80dp"
                         android:layout_gravity="center_horizontal"
                         android:background="@drawable/round_button"
-                        android:src="@drawable/profile" />
+                        android:src="@drawable/ic_action_help" />
                 </LinearLayout>
             </LinearLayout>
         </HorizontalScrollView>

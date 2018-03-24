@@ -30,6 +30,7 @@ import com.directions.route.Route;
 import com.directions.route.RouteException;
 import com.directions.route.Routing;
 import com.directions.route.RoutingListener;
+import com.example.adarsh.quickliftdriver.Util.GPSTracker;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.common.ConnectionResult;
@@ -88,7 +89,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private PlaceAutocompleteFragment autocompleteFragment;
     private Marker marker_cur;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +96,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             Toast.makeText(this, "Perfect !", Toast.LENGTH_SHORT).show();
             setContentView(R.layout.activity_maps);
 
+            getCurrentLocation();
             accept=(Button)findViewById(R.id.accept);
             reject=(Button)findViewById(R.id.reject);
             lin=(LinearLayout)findViewById(R.id.lin);
@@ -664,18 +665,37 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         polylines.clear();
     }
+//-----------------------------------------------------------------------------
+    private void getCurrentLocation() {
+        GPSTracker gps = new GPSTracker(this);
 
+        // check if GPS enabled
+        if (gps.canGetLocation()) {
+
+            double latitude = gps.getLatitude();
+            double longitude = gps.getLongitude();
+            curloc=new Location("");
+            curloc.setLatitude(latitude);
+            curloc.setLongitude(longitude);
+
+        }
+    }
+//---------------------------------------------------------------------------------
     private void tracktripstatus() {
         findViewById(R.id.canceltrip).setVisibility(View.VISIBLE);
         autocompleteFragment.getView().setVisibility(View.GONE);
 
         final String userId= log_id.getString("id",null);
         DatabaseReference delref=FirebaseDatabase.getInstance().getReference("DriversAvailable/"+userId);
-        delref.removeValue();
+//        delref.removeValue();
         DatabaseReference ref=FirebaseDatabase.getInstance().getReference("DriversWorking/"+userId);
-
+//-----------------------------------------------------------------------
+       // getCurrentLocation();
+//-----------------------------------------------------------------------
         GeoFire geoFire=new GeoFire(ref);
         geoFire.setLocation(userId,new GeoLocation(curloc.getLatitude(),curloc.getLongitude()));
+
+
 
         DatabaseReference tripstatus=FirebaseDatabase.getInstance().getReference("Status");
         GeoFire loc=new GeoFire(tripstatus);

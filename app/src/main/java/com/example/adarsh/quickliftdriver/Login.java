@@ -4,10 +4,14 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,7 +23,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.CALL_PHONE;
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 public class Login extends AppCompatActivity {
+    public static final int RequestPermissionCode = 1;
     private FirebaseAuth mAuth;
     ProgressDialog pdialog;
     EditText mPhone,mPassword;
@@ -31,6 +42,10 @@ public class Login extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
+        if (!checkPermission()){
+            Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+            requestPermission();
+        }
     }
 
     @Override
@@ -76,6 +91,7 @@ public class Login extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             // Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            Log.i("TAG","User id : "+user.getUid());
                                 updateUI(user);
 
                         } else {
@@ -109,7 +125,6 @@ public class Login extends AppCompatActivity {
         } else {
             mPassword.setError(null);
         }
-
         return valid;
     }
 
@@ -118,7 +133,11 @@ public class Login extends AppCompatActivity {
         if (user != null) {
             final SharedPreferences log_id=getApplicationContext().getSharedPreferences("Login",MODE_PRIVATE);
             final SharedPreferences.Editor editor=log_id.edit();
-            editor.putString("id",user.getUid());
+            if (user.getUid() != null){
+                editor.putString("id",user.getUid());
+            }else {
+//                editor.putString("id","");
+            }
             editor.putString("ride","");
             editor.commit();
             startActivity(new Intent(Login.this,Welcome.class));
@@ -143,4 +162,61 @@ public class Login extends AppCompatActivity {
         pdialog.setMessage("Authenticating ...");
         pdialog.show();
     }
+
+    public boolean checkPermission() {
+
+        int SecondPermissionResult = ContextCompat.checkSelfPermission(getApplicationContext(), ACCESS_COARSE_LOCATION);
+        int ThirdPermissionResult = ContextCompat.checkSelfPermission(getApplicationContext(), WRITE_EXTERNAL_STORAGE);
+        int FourthPermissionResult = ContextCompat.checkSelfPermission(getApplicationContext(), READ_EXTERNAL_STORAGE);
+        int FifthPermissionResult = ContextCompat.checkSelfPermission(getApplicationContext(), ACCESS_FINE_LOCATION);
+        int SixthPermissionResult = ContextCompat.checkSelfPermission(getApplicationContext(),CALL_PHONE);
+
+        return SecondPermissionResult == PackageManager.PERMISSION_GRANTED &&
+                ThirdPermissionResult == PackageManager.PERMISSION_GRANTED &&
+                FourthPermissionResult ==PackageManager.PERMISSION_GRANTED &&
+                FifthPermissionResult ==PackageManager.PERMISSION_GRANTED &&
+                SixthPermissionResult == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestPermission() {
+
+        ActivityCompat.requestPermissions(Login.this, new String[]
+                {
+                        WRITE_EXTERNAL_STORAGE,
+                        READ_EXTERNAL_STORAGE,
+                        ACCESS_FINE_LOCATION,
+                        ACCESS_COARSE_LOCATION,
+                        CALL_PHONE
+
+                }, RequestPermissionCode);
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+
+            case RequestPermissionCode:
+
+                if (grantResults.length > 0) {
+
+                    boolean CameraPermission = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    boolean RecordAudioPermission = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                    boolean WriteStoragePermission = grantResults[2] == PackageManager.PERMISSION_GRANTED;
+                    boolean ReadStorgaePermission = grantResults[3] == PackageManager.PERMISSION_GRANTED;
+                    boolean CallPermission = grantResults[4] == PackageManager.PERMISSION_GRANTED;
+
+                    if (CameraPermission && RecordAudioPermission && WriteStoragePermission && ReadStorgaePermission && CallPermission) {
+
+                        //Toast.makeText(AnimationActivity.this, "Permission Granted", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Toast.makeText(Login.this,"Permission Denied",Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                break;
+        }
+    }
+
 }

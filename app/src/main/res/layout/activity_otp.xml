@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.adarsh.quickliftdriver.OTPActivity">
+    <TextView
+        android:id="@+id/otp_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25dp"
+        android:text="Enter OTP"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="75dp"/>
+    <EditText
+        android:id="@+id/otp"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/otp_text"
+        android:layout_marginTop="55dp"
+        android:gravity="center_horizontal"
+        android:layout_marginLeft="95dp"/>
+    <Button
+        android:id="@+id/otp_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:text="Submit"
+        android:background="@color/colorPrimaryDark"
+        android:layout_margin="25dp"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>

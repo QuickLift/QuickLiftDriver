@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <permission
         android:name="com.example.adarsh.quickliftdriver.permission.MAPS_RECEIVE"
@@ -28,13 +29,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Welcome">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".Welcome"></activity>
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -53,12 +48,39 @@
         -->
 
         <activity android:name=".MapsActivity" />
-        <activity android:name=".Login" />
+        <activity android:name=".Login">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".DriverRegistration" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".RidesActivity" />
         <activity android:name=".AccountActivity" />
-        <activity android:name=".HelpActivity"></activity>
+        <activity android:name=".HelpActivity" />
+
+        <service
+            android:name=".services.NotificationService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".TripHandlerActivity" />
+        <activity
+            android:name=".MapActivity"
+            android:label="@string/title_activity_map" />
+        <activity
+            android:name=".RequestActivity"
+            android:label="@string/title_activity_request" />
+
+        <service
+            android:name=".services.RequestService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".FeedbackActivity" />
+        <activity android:name=".OTPActivity" />
     </application>
 
 </manifest>

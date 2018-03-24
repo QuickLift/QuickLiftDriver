@@ -74,4 +74,10 @@
     <string name="id_fmt">User ID: %s</string>
     <string name="email_fmt">Email: %s</string>
     <string name="title_activity_home">Map</string>
+    <string name="title_activity_map">Map</string>
+
+    <string name="title_activity_map_full_screen">MapFullScreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_request">Map</string>
 </resources>

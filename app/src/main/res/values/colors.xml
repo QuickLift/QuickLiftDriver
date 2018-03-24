@@ -1,0 +1,8 @@
+<resources>
+
+    <color name="black_overlay">#66000000</color>
+    <color name="accept">#37F470</color>
+    <color name="reject">#F43737</color>
+    <color name="front_color">#037BB1</color>
+    <color name="back_color">#0298DC</color>
+</resources>

@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.adarsh.quickliftdriver.DAO.DatabaseHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -49,6 +50,7 @@ public class DriverRegistration extends AppCompatActivity {
     String upload_img="";
     Uri selectedImage=null;
     private StorageReference mStorageRef;
+    private static DatabaseHelper db;
     DatabaseReference user_db= FirebaseDatabase.getInstance().getReference("Drivers");
 
     @Override
@@ -90,6 +92,7 @@ public class DriverRegistration extends AppCompatActivity {
         vehicle_no=(EditText)findViewById(R.id.vehicle_no);
         password=(EditText)findViewById(R.id.password);
         pic=(CircleImageView) findViewById(R.id.image);
+        db = new DatabaseHelper(this);
 
         pic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,7 +139,7 @@ public class DriverRegistration extends AppCompatActivity {
         }
     }
 
-    private void updateUI(FirebaseUser user) {
+    private void updateUI(FirebaseUser user){ 
         hideProgressDialog();
         if (user != null) {
             Driver driver=new Driver();
@@ -147,6 +150,14 @@ public class DriverRegistration extends AppCompatActivity {
             driver.setPhone(phone.getText().toString());
             driver.setThumb(upload_img);
 
+//            boolean status = db.insertProfileInfo(driver.getName(),driver.getEmail(),driver.getPhone(),password.getText().toString(),driver.getVeh_type(),driver.getVeh_num(),driver.getThumb(),null,null);
+//            if (status){
+//                Toast.makeText(this, "Successfully inserted", Toast.LENGTH_SHORT).show();
+//            }else {
+//                Toast.makeText(this, "Insertion Failed", Toast.LENGTH_SHORT).show();
+//            }
+            finish();
+
             if (selectedImage!=null){
                 StorageReference riversRef = mStorageRef.child("Drivers/"+user.getUid());
 
@@ -155,7 +166,7 @@ public class DriverRegistration extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
                         // Handle unsuccessful uploads
-                        Toast.makeText(DriverRegistration.this, "Failed to upload image !", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(DriverRegistration.this, "Failed to upload image !", Toast.LENGTH_SHORT).show();
 
                     }
                 }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -166,14 +177,12 @@ public class DriverRegistration extends AppCompatActivity {
                 });
             }
             else {
-                Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
             }
 
             Toast.makeText(this, "Successfully Registered !", Toast.LENGTH_SHORT).show();
             user_db.child(user.getUid()).setValue(driver);
             mAuth.signOut();
-
-            finish();
 
         } else {
             Toast.makeText(this, "Data not entered !", Toast.LENGTH_SHORT).show();
