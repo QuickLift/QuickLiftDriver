@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_margin="5dp"
     android:orientation="vertical"
-    tools:context="com.example.adarsh.quickliftdriver.ProfileActivity">
+    tools:context="com.example.adarsh.quickliftdriver.activities.ProfileActivity">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/image"
@@ -35,6 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:numStars="5"
+        android:backgroundTint="@color/front_color"
         style="@style/MyRatingBar"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/driver_contact"/>
@@ -52,12 +53,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="number"
+        android:backgroundTint="@color/front_color"
         android:minEms="10"
         android:hint="Mobile Number"
         android:layout_marginTop="10dp"
         android:layout_below="@id/hr_line"/>
     <EditText
         android:id="@+id/email"
+        android:backgroundTint="@color/front_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
@@ -70,6 +73,7 @@
         android:layout_height="120dp"
         android:layout_marginTop="10dp"
         android:hint="Address"
+        android:backgroundTint="@color/front_color"
         android:gravity="start"
         android:layout_below="@id/email"/>
     <Button

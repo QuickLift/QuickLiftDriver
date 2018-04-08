@@ -7,8 +7,15 @@
     android:background="#ffffff"
     android:fitsSystemWindows="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.adarsh.quickliftdriver.RidesActivity">
+    tools:context="com.example.adarsh.quickliftdriver.activities.RidesActivity">
 
+    <Button
+        android:id="@+id/curr_ride"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Current Ride"
+        android:visibility="gone"/>
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
@@ -16,6 +23,7 @@
         android:dividerHeight="5dp"
         android:divider="@android:color/transparent"
         android:layout_marginTop="?attr/actionBarSize"
-        android:layout_margin="5dp"/>
+        android:layout_margin="5dp"
+        android:layout_below="@+id/curr_ride"/>
 
 </RelativeLayout>

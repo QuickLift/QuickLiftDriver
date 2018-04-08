@@ -1,0 +1,6 @@
+
+lsquid:S3008"RRename this field "otp_btn" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(½ŸËüÿÿÿÿ
+psquid:S1450"VRemove the "otp_btn" field and declare it as a local variable in the relevant methods.(½ŸËüÿÿÿÿ
+Ksquid:S2696"6Make the enclosing method "static" or remove this set.(Ş’‡
+Psquid:S2696"6Make the enclosing method "static" or remove this set.(şşÍùÿÿÿÿ
+osquid:S00116"TRename this field "ride_info" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ğñ¹ßıÿÿÿÿ

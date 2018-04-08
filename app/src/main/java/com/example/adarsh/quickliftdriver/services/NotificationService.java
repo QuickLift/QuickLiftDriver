@@ -7,25 +7,33 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.RemoteViews;
 
-import com.example.adarsh.quickliftdriver.MapActivity;
 import com.example.adarsh.quickliftdriver.R;
-import com.example.adarsh.quickliftdriver.RequestActivity;
-import com.example.adarsh.quickliftdriver.TripHandlerActivity;
-import com.google.android.gms.maps.model.LatLng;
+import com.example.adarsh.quickliftdriver.activities.RequestActivity;
+import com.example.adarsh.quickliftdriver.activities.TripHandlerActivity;
+import com.example.adarsh.quickliftdriver.Util.GPSTracker;
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 
 public class NotificationService extends Service {
-    private static SharedPreferences preferences,loc_pref,ride_info;
-    private static SharedPreferences.Editor editor;
+    private static SharedPreferences preferences,loc_pref,ride_info,Login;
+    private static SharedPreferences.Editor editor,pref_edit;
+    private static NotificationManager notificationManager;
+    private static DatabaseReference customerReq;
 
     public NotificationService() {
-
+        customerReq= FirebaseDatabase.getInstance().getReference("CustomerRequests");
     }
 
     @Override
@@ -38,6 +46,7 @@ public class NotificationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("TAG","onStartCommand of NotificationService");
         loc_pref = getSharedPreferences("locations",Context.MODE_PRIVATE);
+        Login = getSharedPreferences("Login",Context.MODE_PRIVATE);
         editor = loc_pref.edit();
         editor.putFloat("pick_lat",12.832455f);
         editor.putFloat("pick_long",77.701050f);
@@ -46,10 +55,12 @@ public class NotificationService extends Service {
         editor.commit();
         preferences = getSharedPreferences("loginPref",MODE_PRIVATE);
         ride_info = getSharedPreferences("ride_info",MODE_PRIVATE);
-        if (!preferences.getBoolean("status",true)){
-            stopSelf();
-        }else{
+
+        if (ride_info.getString("accept",null).equalsIgnoreCase("0")){
             notificationHandler();
+        }else {
+            notificationManager.cancel(0);
+            stopSelf();
         }
         return START_NOT_STICKY;
     }
@@ -58,7 +69,7 @@ public class NotificationService extends Service {
         Uri alarmSound = Uri.parse("android.resource://" + getApplicationContext().getPackageName() + "/" + R.raw.notification_tone);
         android.support.v4.app.NotificationCompat.BigPictureStyle bigPictureStyle = new android.support.v4.app.NotificationCompat.BigPictureStyle();
         bigPictureStyle.bigPicture(BitmapFactory.decodeResource(getResources(), R.drawable.profile)).build();
-        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 
         Intent cancelIntent = new Intent(NotificationService.this, TripHandlerActivity.class);
         cancelIntent.putExtra("value","cancel");
@@ -69,8 +80,8 @@ public class NotificationService extends Service {
         PendingIntent confirmPendingIntent = PendingIntent.getActivity(this,25,confirmIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
         Intent mapIntent = new Intent(this, RequestActivity.class);
-        mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent piIntent = PendingIntent.getActivity(this,(int)Calendar.getInstance().getTimeInMillis(),mapIntent,0);
+//        mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent piIntent = PendingIntent.getActivity(this,(int)Calendar.getInstance().getTimeInMillis(),mapIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
         android.support.v4.app.NotificationCompat.Builder builder = (android.support.v4.app.NotificationCompat.Builder)new android.support.v4.app.NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
@@ -79,14 +90,75 @@ public class NotificationService extends Service {
                 .setContentIntent(piIntent)
                 .setStyle(bigPictureStyle)
                 .setAutoCancel(true)
-                .setTimeoutAfter(8000)
+                .setTimeoutAfter(18000)
                 .setSound(alarmSound)
                 .setPriority(NotificationManager.IMPORTANCE_HIGH)
                 .addAction(R.mipmap.ic_launcher,"Cancel",cancelPendingIntent)
                 .addAction(R.mipmap.ic_launcher,"Confirm",confirmPendingIntent);
         notificationManager.notify(0,builder.build());
+
         SharedPreferences.Editor prefEdit = preferences.edit();
         prefEdit.putBoolean("status",false);
         prefEdit.commit();
+        new getNotifStatus().start();
+    }
+
+    private class getNotifStatus extends Thread{
+        @Override
+        public void run() {
+            customerReq.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (!dataSnapshot.hasChild(Login.getString("id",null))){
+                        notificationManager.cancel(0);
+                        getCurrentLocation();
+                        SharedPreferences.Editor prefEdit = preferences.edit();
+                        prefEdit.putBoolean("status",true);
+                        prefEdit.commit();
+//                        Intent intent1 = new Intent(getApplicationContext(), Welcome.class);
+//                        intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        startActivity(intent1);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+    }
+
+    private void getCurrentLocation() {
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+
+
+        }
+        GPSTracker gps = new GPSTracker(this);
+
+        // check if GPS enabled
+        if (gps.canGetLocation()) {
+
+            double latitude = gps.getLatitude();
+            double longitude = gps.getLongitude();
+
+            if (Login.getString("ride",null).equals("")) {
+                String userId = Login.getString("id",null);
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("DriversAvailable/"+Login.getString("type",null));
+//            ref.push().setValue("hello");
+                GeoFire geoFire = new GeoFire(ref);
+                geoFire.setLocation(userId, new GeoLocation(latitude, longitude));
+            }
+            else {
+                String userId= Login.getString("id",null);
+                DatabaseReference ref=FirebaseDatabase.getInstance().getReference("DriversWorking/"+Login.getString("type",null)+"/"+userId);
+
+                GeoFire geoFire=new GeoFire(ref);
+                geoFire.setLocation(userId,new GeoLocation(latitude,longitude));
+            }
+        }
+
     }
 }

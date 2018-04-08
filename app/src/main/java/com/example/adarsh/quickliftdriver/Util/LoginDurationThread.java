@@ -3,7 +3,7 @@ package com.example.adarsh.quickliftdriver.Util;
 import android.widget.TextView;
 
 import com.example.adarsh.quickliftdriver.R;
-import com.example.adarsh.quickliftdriver.Welcome;
+import com.example.adarsh.quickliftdriver.activities.Welcome;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

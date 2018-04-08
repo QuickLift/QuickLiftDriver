@@ -1,0 +1,29 @@
+
+:squid:S1659"%Declare "to_date" on a separate line.(ÿ¥÷Ğ
+ssquid:S1450"XRemove the "mLoadData" field and declare it as a local variable in the relevant methods.(ÂÜ¿M8³à¦İ§,
+[squid:S3398"?Move this method into the anonymous class declared at line 119.(à§ìÿ8†æ°ì§,
+gsquid:S3008"RRename this field "to_date" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÿ¥÷Ğ
+csquid:MaximumInheritanceDepth"<This class has 7 parents which is greater than 5 authorized.(‘Ä¬
+squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(¹Ş‰8†æ°ì§,
+usquid:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(ö€ÓŒ8…şÈõ§,
+Asquid:S2885"'Make "myCalendar" an instance variable.(Û‡©Šüÿÿÿÿ
+]squid:UselessImportCheck"/Remove this unused import 'android.app.Dialog'.(·‚Àúÿÿÿÿ8…şÈõ§,
+Psquid:S2696"6Make the enclosing method "static" or remove this set.(Ó°ıöûÿÿÿÿ
+Psquid:S2696"6Make the enclosing method "static" or remove this set.(·£ó¶şÿÿÿÿ
+Usquid:S1481"4Remove this unused "rideHistoryList" local variable.(ğ™³¥ùÿÿÿÿ8 §şı§,
+Hsquid:S1068"-Remove this unused "mLoadData" private field.(ÂÜ¿M8Ü…Û§,
+bsquid:HiddenFieldCheck";Rename "toDate" which hides the field declared at line 129.(Ò°Ø8®êì§,
+isquid:HiddenFieldCheck"=Rename "fromDate" which hides the field declared at line 119.(‰éäÿøÿÿÿÿ8®êì§,
+dsquid:S1854"CRemove this useless assignment to local variable "rideHistoryList".(ğ™³¥ùÿÿÿÿ8 §şı§,
+Ssquid:S1854"7Remove this useless assignment to local variable "map".(ö€ÓŒ8Õ††ı§,
+bsquid:UselessImportCheck"4Remove this unused import 'android.widget.TextView'.(„Ë‚ˆÿÿÿÿÿ8…şÈõ§,
+lsquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(š¯²Åüÿÿÿÿ8û‡Ñğ§,
+Ksquid:S2696"6Make the enclosing method "static" or remove this set.(Šñ¨¥
+Dsquid:S1481"(Remove this unused "map" local variable.(ö€ÓŒ8Õ††ı§,
+[squid:S3398"?Move this method into the anonymous class declared at line 129.(“Ç†ä8†æ°ì§,
+isquid:S3008"TRename this field "from_date" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÿ¥÷Ğ
+zsquid:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(¢¡ì½üÿÿÿÿ8‹¡àí§,
+gsquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(µÈ¾­8Íİ˜ì§,
+Ssquid:S1135"2Complete the task associated to this TODO comment.(» æÿÿÿÿÿ8†æ°ì§,
+Ssquid:S1135"2Complete the task associated to this TODO comment.(» æÿÿÿÿÿ8†æ°ì§,
+nsquid:S3776"RRefactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.(ÜÊ‘8¼»õï§,

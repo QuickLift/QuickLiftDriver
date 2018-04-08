@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.adarsh.quickliftdriver.Welcome">
+    tools:context="com.example.adarsh.quickliftdriver.activities.Welcome">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/image"
@@ -41,7 +41,7 @@
         android:id="@+id/driver_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Driver Name"
+        android:text=""
         android:gravity="center_horizontal"
         android:layout_margin="3dp"
         android:textSize="18sp"
@@ -50,7 +50,7 @@
         android:id="@+id/driver_contact"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="9678436389"
+        android:text=""
         android:textSize="18sp"
         android:layout_below="@+id/driver_name"
         android:gravity="center_horizontal"/>
@@ -61,6 +61,7 @@
         android:layout_height="wrap_content"
         android:numStars="5"
         style="@style/MyRatingBar"
+        android:backgroundTint="@color/front_color"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/driver_contact"/>
 
@@ -103,7 +104,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="8"
+                    android:text=""
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
             </LinearLayout>
@@ -123,7 +124,7 @@
                     android:id="@+id/earn_no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Rs. 1500"
+                    android:text=""
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
             </LinearLayout>
@@ -143,7 +144,7 @@
                     android:id="@+id/cancel_no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0"
+                    android:text=""
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
             </LinearLayout>

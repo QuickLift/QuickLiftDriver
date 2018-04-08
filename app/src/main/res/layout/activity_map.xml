@@ -10,18 +10,42 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.example.adarsh.quickliftdriver.MapActivity" />
+        tools:context="com.example.adarsh.quickliftdriver.activities.MapActivity" />
+
+    <LinearLayout
+        android:id="@+id/dest_type"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:orientation="horizontal"
+        android:background="@color/back_color"
+        android:weightSum="3">
+        <TextView
+            android:id="@+id/type"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_weight="1"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_action_name"
+            android:layout_weight="1"/>
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/cancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="100dp">
         <Button
-            android:layout_margin="20dp"
             android:id="@+id/cancel_btn"
             android:text="Cancel Trip"
-            android:onClick="cancel_trip"
             android:background="@color/front_color"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -56,8 +80,8 @@
     <RelativeLayout
         android:id="@+id/customer_locate"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/customer_pickup"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
         android:background="@color/back_color">
         <!--<TextView-->
             <!--android:id="@+id/c_locate_name"-->
@@ -79,7 +103,7 @@
             android:layout_margin="5dp"
             android:id="@+id/locate_button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:background="@color/front_color"
             android:gravity="center"
             android:text="Customer Located"/>
@@ -88,13 +112,13 @@
     <RelativeLayout
         android:id="@+id/start_trip"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/back_color">
+        android:layout_height="60dp"
+        android:background="@color/back_color"
+        android:layout_alignParentStart="true">
         <Button
             android:id="@+id/start_trip_btn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:text="Start Trip"
             android:gravity="center"
             android:layout_margin="5dp"
@@ -123,12 +147,12 @@
     <RelativeLayout
         android:id="@+id/end_trip"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/customer_drop">
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true">
         <Button
             android:id="@+id/end_trip_btn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:text="END TRIP"
             android:background="@color/reject"/>
     </RelativeLayout>

@@ -1,0 +1,24 @@
+
+S"squid:SwitchLastCaseIsDefaultCheck""Add a default case to this switch.(×ö³–úÿÿÿÿ
+lsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‹Öæƒùÿÿÿÿ
+hsquid:MaximumInheritanceDepth"<This class has 7 parents which is greater than 5 authorized.(§ÿ—Ôüÿÿÿÿ
+lsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Òé°Àüÿÿÿÿ
+esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ÆÁÚ¶ÿÿÿÿÿ
+lsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ßÉÙýúÿÿÿÿ
+gsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ŽÿÌú
+lsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(³‹¦·úÿÿÿÿ
+Asquid:S1659"'Declare "mPassword" on a separate line.(²ÄÓùÿÿÿÿ
+esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(Çóý¶þÿÿÿÿ
+Msquid:S1197"8Move the array designator from the variable to the type.(¯ÜÑñ
+`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(»ÑïŸ
+Esquid:S1659"+Declare "mRegistration" on a separate line.(ƒÄÃãþÿÿÿÿ
+gsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(èÞ»·
+esquid:S1301"KReplace this "switch" statement by "if" statements to increase readability.(×ö³–úÿÿÿÿ
+lsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Êˆ×˜üÿÿÿÿ
+fsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¶Õ€0
+gsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(’ãß
+fsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‰¥ç
+`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(²¼œ¦
+lsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¸ñœøÿÿÿÿ
+`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(å´Ò§
+usquid:S00115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(ËùÓóøÿÿÿÿ
