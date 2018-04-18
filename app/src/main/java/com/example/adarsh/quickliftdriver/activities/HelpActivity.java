@@ -1,6 +1,7 @@
 package com.example.adarsh.quickliftdriver.activities;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ public class HelpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
 
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         office = (ImageButton)findViewById(R.id.call_office);
         center = (ImageButton)findViewById(R.id.call_center);
 

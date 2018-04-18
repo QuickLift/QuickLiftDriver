@@ -1,5 +1,6 @@
 package com.example.adarsh.quickliftdriver.services;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -9,6 +10,7 @@ import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -23,6 +25,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import junit.runner.Version;
 
 import java.util.Calendar;
 
@@ -83,6 +87,10 @@ public class NotificationService extends Service {
 //        mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent piIntent = PendingIntent.getActivity(this,(int)Calendar.getInstance().getTimeInMillis(),mapIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
+        String ChannelId = "channel-oreo";
+        String ChannelName = "channel_name";
+        int importance = NotificationManager.IMPORTANCE_HIGH;
+
         android.support.v4.app.NotificationCompat.Builder builder = (android.support.v4.app.NotificationCompat.Builder)new android.support.v4.app.NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Incoming Trip Request")
@@ -92,9 +100,15 @@ public class NotificationService extends Service {
                 .setAutoCancel(true)
                 .setTimeoutAfter(18000)
                 .setSound(alarmSound)
+                .setPriority(NotificationManager.IMPORTANCE_MAX)
                 .setPriority(NotificationManager.IMPORTANCE_HIGH)
                 .addAction(R.mipmap.ic_launcher,"Cancel",cancelPendingIntent)
                 .addAction(R.mipmap.ic_launcher,"Confirm",confirmPendingIntent);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel mChannel = new NotificationChannel(ChannelId,ChannelName,importance);
+            notificationManager.createNotificationChannel(mChannel);
+        }
         notificationManager.notify(0,builder.build());
 
         SharedPreferences.Editor prefEdit = preferences.edit();

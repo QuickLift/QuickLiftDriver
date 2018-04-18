@@ -1,16 +1,0 @@
-
->squid:S1659"$Declare "cancel" on a separate line.(•Óõ¡ıÿÿÿÿ
-;squid:S1659"&Declare "user_add" on a separate line.(“ÛõË
-isquid:S3008"TRename this field "user_name" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(“ÛõË
-hsquid:S3008"SRename this field "user_add" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(“ÛõË
-Dsquid:S1068"*Remove this unused "editor" private field.(²Æìğşÿÿÿÿ
-msquid:S1450"SRemove the "mMap" field and declare it as a local variable in the relevant methods.(—­ƒÌÿÿÿÿÿ
-psquid:S1450"VRemove the "confirm" field and declare it as a local variable in the relevant methods.(•Óõ¡ıÿÿÿÿ
-osquid:S1450"URemove the "cancel" field and declare it as a local variable in the relevant methods.(•Óõ¡ıÿÿÿÿ
-Psquid:S2696"6Make the enclosing method "static" or remove this set.(ÍãóÀıÿÿÿÿ
-Psquid:S2696"6Make the enclosing method "static" or remove this set.(”ÿøÿÿÿÿ
-Psquid:S2696"6Make the enclosing method "static" or remove this set.(•¢¨¯ùÿÿÿÿ
-Ksquid:S2696"6Make the enclosing method "static" or remove this set.(–’µ
-Ksquid:S2696"6Make the enclosing method "static" or remove this set.(°Ù‰Ö
-Xsquid:UselessImportCheck"6Remove this unused import 'android.app.PendingIntent'.(šºŞ—
-ƒsquid:UselessImportCheck"\Remove this unused import 'com.example.adarsh.quickliftdriver.services.NotificationService'.(®èğşÿÿÿÿ

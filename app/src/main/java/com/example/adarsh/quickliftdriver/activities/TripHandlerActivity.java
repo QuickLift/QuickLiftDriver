@@ -1,7 +1,10 @@
 package com.example.adarsh.quickliftdriver.activities;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,11 +37,14 @@ public class TripHandlerActivity extends AppCompatActivity {
     GPSTracker gps;
     double latitude,longitude;
     Stack<SequenceModel> stack;
+    NotificationManager notificationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_handler);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         log_id = getSharedPreferences("Login", MODE_PRIVATE);
         ride_info = getSharedPreferences("ride_info",MODE_PRIVATE);
@@ -52,6 +58,8 @@ public class TripHandlerActivity extends AppCompatActivity {
         String value = extras.getStringExtra("value");
         Toast.makeText(this, "value1 = " + value, Toast.LENGTH_SHORT).show();
 
+        notificationManager = notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(0);
         if (value.equalsIgnoreCase("cancel")) {
             cancelTrip();
         } else if (value.equalsIgnoreCase("confirm")) {
@@ -142,37 +150,38 @@ public class TripHandlerActivity extends AppCompatActivity {
 
         getCurrentLocation();
 
-        GregorianCalendar gregorianCalendar=new GregorianCalendar();
-        String date = String.valueOf(gregorianCalendar.get(GregorianCalendar.DAY_OF_MONTH));
-        String month = String.valueOf(gregorianCalendar.get(GregorianCalendar.MONTH)+1);
-        String year = String.valueOf(gregorianCalendar.get(GregorianCalendar.YEAR));
-        final String formateDate = year+"-"+month+"-"+date;
-
-        final DatabaseReference driver_acc = FirebaseDatabase.getInstance().getReference("Driver_Account_Info/"+log_id.getString("id",null)+"/"+formateDate);
-        driver_acc.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot data : dataSnapshot.getChildren()){
-                    Map<String,Object> map = (Map<String,Object>)data.getValue();
-                    int confirm = Integer.parseInt(map.get("book").toString());
-                    int earn = Integer.parseInt(map.get("earn").toString());
-                    confirm = confirm+1;
-                    earn = earn + 100;
-                    String key = data.getKey();
-                    try {
-                        driver_acc.child(key).child("book").setValue(Integer.toString(confirm));
-                        driver_acc.child(key).child("earn").setValue(Integer.toString(earn));
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+//        GregorianCalendar gregorianCalendar=new GregorianCalendar();
+//        String date = String.valueOf(gregorianCalendar.get(GregorianCalendar.DAY_OF_MONTH));
+//        String month = String.valueOf(gregorianCalendar.get(GregorianCalendar.MONTH)+1);
+//        String year = String.valueOf(gregorianCalendar.get(GregorianCalendar.YEAR));
+//        final String formateDate = year+"-"+month+"-"+date;
+//
+//        final DatabaseReference driver_acc = FirebaseDatabase.getInstance().getReference("Driver_Account_Info/"+log_id.getString("id",null)+"/"+formateDate);
+//        driver_acc.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for (DataSnapshot data : dataSnapshot.getChildren()){
+//                    Map<String,Object> map = (Map<String,Object>)data.getValue();
+//                    int confirm = Integer.parseInt(map.get("book").toString());
+//                    int earn = Integer.parseInt(map.get("earn").toString());
+//                    confirm = confirm+1;
+//                    earn = earn + 100;
+//                    String key = data.getKey();
+//                    try {
+//                        driver_acc.child(key).child("book").setValue(Integer.toString(confirm));
+//                        driver_acc.child(key).child("earn").setValue(Integer.toString(earn));
+//                    }catch (Exception e){
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
         Intent intent = new Intent(this, MapActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
         finish();
     }

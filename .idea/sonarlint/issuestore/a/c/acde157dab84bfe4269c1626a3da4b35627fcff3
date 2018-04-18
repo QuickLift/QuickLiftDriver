@@ -1,28 +1,0 @@
-
-S"squid:SwitchLastCaseIsDefaultCheck""Add a default case to this switch.(øå´¡ÿÿÿÿÿ
-S"squid:SwitchLastCaseIsDefaultCheck""Add a default case to this switch.(×ö³–úÿÿÿÿ
-8squid:S1659"#Declare "email" on a separate line.(éÉÓ«
-8squid:S1659"#Declare "phone" on a separate line.(éÉÓ«
-;squid:S1659"&Declare "password" on a separate line.(éÉÓ«
-:squid:S1659"%Declare "vehicle" on a separate line.(éÉÓ«
-=squid:S1659"(Declare "vehicle_no" on a separate line.(éÉÓ«
-_squid:S1192"JDefine a constant instead of duplicating this literal "Required." 6 times.(¨¤…ø
-@squid:S1068"&Remove this unused "db" private field.(É™ì‘ûÿÿÿÿ
-ksquid:S1450"QRemove the "db" field and declare it as a local variable in the relevant methods.(É™ì‘ûÿÿÿÿ
-esquid:S1301"KReplace this "switch" statement by "if" statements to increase readability.(øå´¡ÿÿÿÿÿ
-esquid:S1301"KReplace this "switch" statement by "if" statements to increase readability.(×ö³–úÿÿÿÿ
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(úİ¯±
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.( †Æôøÿÿÿÿ
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(­°åòøÿÿÿÿ
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ÍÄ°ı
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(‡òİü
-_squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(üŠI
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ñµ»İøÿÿÿÿ
-qsquid:S1488"\Immediately return this expression instead of assigning it to the temporary variable "temp".(™¬Ö¤
-Psquid:S2696"6Make the enclosing method "static" or remove this set.(Œ¼ÓŒüÿÿÿÿ
-Gsquid:S1905"2Remove this unnecessary cast to "CircleImageView".(ü­»ñ
-?squid:S00108")Either remove or fill this block of code.(Øæğ
-ksquid:S00116"URename this field "vehicle_no" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(éÉÓ«
-ksquid:S00116"URename this field "upload_img" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ÿ¡¨å
-msquid:S00116"RRename this field "user_db" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¡ÑÂöûÿÿÿÿ
-hsquid:MaximumInheritanceDepth"<This class has 7 parents which is greater than 5 authorized.(´êá™ÿÿÿÿÿ

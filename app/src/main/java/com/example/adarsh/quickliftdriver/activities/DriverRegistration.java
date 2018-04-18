@@ -53,7 +53,7 @@ public class DriverRegistration extends AppCompatActivity {
     Uri selectedImage=null;
     private StorageReference mStorageRef;
     private static DatabaseHelper db;
-    DatabaseReference user_db= FirebaseDatabase.getInstance().getReference("Drivers");
+    DatabaseReference user_db= FirebaseDatabase.getInstance().getReference("Drivers/");
 
     @Override
     public void onBackPressed() {
@@ -76,6 +76,8 @@ public class DriverRegistration extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver_registration);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         getSupportActionBar().setTitle("Driver Registration");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.example.adarsh.quickliftdriver.DAO.DatabaseHelper;
 import com.example.adarsh.quickliftdriver.R;
 import com.example.adarsh.quickliftdriver.Util.GPSTracker;
+import com.example.adarsh.quickliftdriver.services.OngoingRideService;
 import com.example.adarsh.quickliftdriver.services.RequestService;
 import com.example.adarsh.quickliftdriver.services.ShareRideCheckingService;
 import com.firebase.geofire.GeoFire;
@@ -103,37 +104,15 @@ public class Welcome extends AppCompatActivity implements Runnable
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         log_id=getApplicationContext().getSharedPreferences("Login",MODE_PRIVATE);
         final SharedPreferences.Editor pref_editor=log_id.edit();
 
         startService(new Intent(this, ShareRideCheckingService.class));
 
         db = FirebaseDatabase.getInstance().getReference("Drivers");
-
-            db.child(log_id.getString("id",null)).child("veh_type").addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    Log.i("TAG","I am Here : "+dataSnapshot.getValue().toString());
-                    String getType = (String) dataSnapshot.getValue();
-                    if (getType.equalsIgnoreCase("car")){
-                        type = "Car";
-                    }else if (getType.equalsIgnoreCase("bike")){
-                        type = "Bike";
-                    }else if (getType.equalsIgnoreCase("auto")){
-                        type = "Auto";
-                    }else if (getType.equalsIgnoreCase("rickshaw")){
-                        type = "Rickshaw";
-                    }
-
-                    pref_editor.putString("type",type);
-                    pref_editor.commit();
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
+        type = log_id.getString("type",null);
         driver_acc = FirebaseDatabase.getInstance().getReference("Driver_Account_Info");
         databaseHelper = new DatabaseHelper(getApplicationContext());
         requestService = new Intent(Welcome.this,RequestService.class);
@@ -303,6 +282,25 @@ public class Welcome extends AppCompatActivity implements Runnable
     @Override
     protected void onStart() {
         super.onStart();
+        DatabaseReference customerReq= FirebaseDatabase.getInstance().getReference("CustomerRequests/"+log_id.getString("id",null));
+        customerReq.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    if (dataSnapshot.hasChildren()){
+                        if (dataSnapshot.getChildrenCount() > 0){
+                            Log.i("TAG","previous rides : "+dataSnapshot.getChildrenCount());
+                            startService(new Intent(Welcome.this, OngoingRideService.class));
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         if(pref.getBoolean("status",false)){
             login_btn.setChecked(true);
             login_status.setText("Login");

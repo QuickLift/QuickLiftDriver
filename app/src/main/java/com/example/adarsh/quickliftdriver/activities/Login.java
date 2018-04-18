@@ -3,6 +3,7 @@ package com.example.adarsh.quickliftdriver.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,6 +23,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -35,6 +41,7 @@ public class Login extends AppCompatActivity {
     ProgressDialog pdialog;
     EditText mPhone,mPassword;
     Button mLogin,mRegistration;
+    String type = null;
 
     @Override
     public void onStart() {
@@ -52,6 +59,7 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         getSupportActionBar().setTitle("Login");
         //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -140,6 +148,33 @@ public class Login extends AppCompatActivity {
             }
             editor.putString("ride","");
             editor.commit();
+
+            DatabaseReference db = FirebaseDatabase.getInstance().getReference("Drivers");
+            db.child(log_id.getString("id",null)).child("veh_type").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    Log.i("TAG","I am Here : "+dataSnapshot.getValue().toString());
+                    String getType = (String) dataSnapshot.getValue();
+                    if (getType.equalsIgnoreCase("car")){
+                        type = "Car";
+                    }else if (getType.equalsIgnoreCase("bike")){
+                        type = "Bike";
+                    }else if (getType.equalsIgnoreCase("auto")){
+                        type = "Auto";
+                    }else if (getType.equalsIgnoreCase("rickshaw")){
+                        type = "Rickshaw";
+                    }
+
+                    editor.putString("type",type);
+                    editor.commit();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
             startActivity(new Intent(Login.this,Welcome.class));
             finish();
         } else {

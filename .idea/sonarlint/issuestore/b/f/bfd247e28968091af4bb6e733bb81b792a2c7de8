@@ -1,67 +1,0 @@
-
-esquid:S1192"PDefine a constant instead of duplicating this literal "DriversWorking/" 5 times.(åÚÎ
-=squid:S1068"(Remove this unused "ride" private field.(êÖØô
-Osquid:S1854":Remove this useless assignment to local variable "delref".(½»ª·
-=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
-=squid:S1185"(Remove this method to simply inherit it.(Ù«µ§
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(Íœ××şÿÿÿÿ
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(×¶Ñ–ÿÿÿÿÿ
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(öóóÑùÿÿÿÿ
-esquid:UselessImportCheck"DRemove this unused import 'android.support.v4.app.FragmentActivity'.(¸­¯D
-–squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(¹Ş‰
->squid:S1659"$Declare "reject" on a separate line.(Ê§ó¾üÿÿÿÿ
-Isquid:S1066"/Merge this if statement with the enclosing one.(È²ÚÄûÿÿÿÿ
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(‰ôÎ˜üÿÿÿÿ
-Xsquid:S1155">Use isEmpty() to check whether the collection is empty or not.(ğ¡ Óşÿÿÿÿ
-Lsquid:S1135"2Complete the task associated to this TODO comment.(áÃæùÿÿÿÿ
-Vsquid:S1854"<Remove this useless assignment to local variable "locality".(é¼“ıÿÿÿÿ
-Lsquid:S1135"2Complete the task associated to this TODO comment.(áÃæùÿÿÿÿ
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(İûÑ„
-@squid:S1481"+Remove this unused "delref" local variable.(½»ª·
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(Çû¦Ğ
-Lsquid:S1135"2Complete the task associated to this TODO comment.(³‚‹ışÿÿÿÿ
-›squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(¢İ‰¥ùÿÿÿÿ
-lsquid:S00116"VRename this field "marker_drop" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(êÂšá
-isquid:UselessImportCheck"BRemove this unused import 'com.google.firebase.auth.FirebaseAuth'.(İÄğöûÿÿÿÿ
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ÆšÇŞ
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(¡ßòúÿÿÿÿ
-lsquid:S3776"RRefactor this method to reduce its Cognitive Complexity from 30 to the 15 allowed.(¨Œşÿÿÿÿ
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(¼ş‚ºşÿÿÿÿ
-Ysquid:UnusedPrivateMethod"1Remove this unused private "goToLocation" method.(¾ï¶†øÿÿÿÿ
-Psquid:UnusedPrivateMethod"-Remove this unused private "drawline" method.(‡õ“ª
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ğ–ß³
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(¤Š™˜
-›squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(³ÆÌ¶øÿÿÿÿ
-Šsquid:S1319"pThe type of the "route" object should be an interface such as "List" rather than the implementation "ArrayList".(©ˆ—»øÿÿÿÿ
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ĞÌ§·
-–squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(¹Ş‰
-dsquid:S1192"JDefine a constant instead of duplicating this literal "Response/" 3 times.(¡‘šêÿÿÿÿÿ
-–squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(¹Ş‰
-ksquid:S00116"URename this field "marker_cur" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¯¤ìÅ
-–squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(½ë¿í
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ÏÙğß
-Xsquid:HiddenFieldCheck"8Rename "line" which hides the field declared at line 79.(ÁÛµ»
-lsquid:S00116"VRename this field "marker_pick" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(êÂšá
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(•´Éıÿÿÿÿ
-ksquid:S1192"QDefine a constant instead of duplicating this literal "DriversAvailable" 6 times.(—Ñ˜ëıÿÿÿÿ
-lsquid:S1450"RRemove the "lct" field and declare it as a local variable in the relevant methods.(©ê‡•ÿÿÿÿÿ
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(”•Àß
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(Éª®ü
-]squid:UnusedPrivateMethod"5Remove this unused private "getDirectionsUrl" method.(ªø¦ÿÿÿÿÿ
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(®şœßüÿÿÿÿ
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ö®˜ï
-Gsquid:S1481"-Remove this unused "locality" local variable.(é¼“ıÿÿÿÿ
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(Ş¦–ı
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(À‹¥üÿÿÿÿ
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(õÌ´ı
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(¾¾Üì
-–squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(Şİ¡®
-lsquid:S00116"QRename this field "log_id" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ŠŠùÿÿÿÿ
-Gsquid:S1135"2Complete the task associated to this TODO comment.(èå£ô
-osquid:UselessImportCheck"MRemove this unused import 'com.google.android.gms.location.LocationCallback'.(âÄºÅ
->squid:S1659")Declare "marker_drop" on a separate line.(êÂšá
-<squid:S1185"(Remove this method to simply inherit it.(¹§ 
-rsquid:UselessImportCheck"KRemove this unused import 'com.google.android.gms.maps.SupportMapFragment'.(ğ¤Çÿÿÿÿÿ
-Ssquid:S1905"2Remove this unnecessary cast to "CircleImageView".(ƒÇ“âûÿÿÿÿ8ãÌíÚ§,
-esquid:CallToDeprecatedMethod"8Remove this use of "FusedLocationApi"; it is deprecated.(ïĞ„Ä8ãÌíÚ§,
-jsquid:MaximumInheritanceDepth"<This class has 7 parents which is greater than 5 authorized.(Áì±‘8ãÌíÚ§,

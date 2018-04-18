@@ -66,5 +66,5 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="20dp"
         android:text="Submit"
-        android:background="@color/colorPrimaryDark"/>
+        android:background="@color/back_color"/>
 </RelativeLayout>

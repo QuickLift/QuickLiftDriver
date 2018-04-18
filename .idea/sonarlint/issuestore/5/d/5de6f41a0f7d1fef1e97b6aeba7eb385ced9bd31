@@ -1,138 +1,0 @@
-
-S"squid:SwitchLastCaseIsDefaultCheck""Add a default case to this switch.(×ö³–úÿÿÿÿ
-N"squid:SwitchLastCaseIsDefaultCheck""Add a default case to this switch.(Û ‰¹
-:squid:S1659"%Declare "profile" on a separate line.(ï³±˜
-:squid:S1659"%Declare "account" on a separate line.(ï³±˜
-7squid:S1659""Declare "help" on a separate line.(ï³±˜
-Bsquid:S1659"(Declare "driver_acc" on a separate line.(ıÚûûÿÿÿÿ
-Csquid:S1659")Declare "driver_info" on a separate line.(ıÚûûÿÿÿÿ
-Asquid:S1659",Declare "login_duration" on a separate line.(ÁÚ–˜
-7squid:S1659""Declare "book" on a separate line.(ÁÚ–˜
-7squid:S1659""Declare "earn" on a separate line.(ÁÚ–˜
-9squid:S1659"$Declare "cancel" on a separate line.(ÁÚ–˜
-7squid:S1659""Declare "name" on a separate line.(ÁÚ–˜
-:squid:S1659"%Declare "contact" on a separate line.(ÁÚ–˜
-;squid:S1659"&Declare "wel_edit" on a separate line.(Å§Ò×
-?squid:S1659"%Declare "welcome" on a separate line.(ÍóéŠÿÿÿÿÿ
->squid:S1659")Declare "logout_time" on a separate line.(ÖÆË¦
-9squid:S1659"$Declare "minute" on a separate line.(áãå¾
-7squid:S1659""Declare "hour" on a separate line.(áãå¾
-msquid:ModifiersOrderCheck"EReorder the modifiers to comply with the Java Language Specification.(æ³û·ùÿÿÿÿ
-Msquid:S1197"8Move the array designator from the variable to the type.(¯ÜÑñ
-[squid:S1192"FDefine a constant instead of duplicating this literal "Login" 3 times.(µò¶²
-\squid:S1192"GDefine a constant instead of duplicating this literal "status" 4 times.(ƒè‡ï
-asquid:S1192"GDefine a constant instead of duplicating this literal "cancel" 3 times.(½à—ıÿÿÿÿ
-nsquid:S3008"TRename this field "login_btn" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÕÈ´Ğûÿÿÿÿ
-osquid:S3008"URename this field "driver_acc" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ıÚûûÿÿÿÿ
-psquid:S3008"VRename this field "driver_info" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ıÚûûÿÿÿÿ
-lsquid:S3008"WRename this field "login_status" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÁÚ–˜
-nsquid:S3008"YRename this field "login_duration" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÁÚ–˜
-hsquid:S3008"SRename this field "wel_edit" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Å§Ò×
-ksquid:S3008"QRename this field "log_id" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÍóéŠÿÿÿÿÿ
-jsquid:S3008"URename this field "login_time" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÖÆË¦
-ksquid:S3008"VRename this field "logout_time" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÖÆË¦
-Dsquid:S1066"/Merge this if statement with the enclosing one.(ÊÖİ
-Dsquid:S1066"/Merge this if statement with the enclosing one.(ÊÖİ
-hsquid:S1450"SRemove the "ride" field and declare it as a local variable in the relevant methods.(ï³±˜
-ksquid:S1450"VRemove the "profile" field and declare it as a local variable in the relevant methods.(ï³±˜
-ksquid:S1450"VRemove the "account" field and declare it as a local variable in the relevant methods.(ï³±˜
-hsquid:S1450"SRemove the "help" field and declare it as a local variable in the relevant methods.(ï³±˜
-tsquid:S1450"ZRemove the "driver_info" field and declare it as a local variable in the relevant methods.(ıÚûûÿÿÿÿ
-hsquid:S1450"SRemove the "rate" field and declare it as a local variable in the relevant methods.(Ú†–·
-osquid:S1450"ZRemove the "logout_time" field and declare it as a local variable in the relevant methods.(ÖÆË¦
-esquid:S1301"KReplace this "switch" statement by "if" statements to increase readability.(×ö³–úÿÿÿÿ
-fsquid:S2095"LUse try-with-resources or close this "BufferedWriter" in a "finally" clause.(ÕÖÎÁûÿÿÿÿ
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(Àµ®ãüÿÿÿÿ
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(Àµ®ãüÿÿÿÿ
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(Àµ®ãüÿÿÿÿ
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(Àµ®ãüÿÿÿÿ
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(Î÷øşÿÿÿÿ
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(İÓã¨øÿÿÿÿ
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ÅœşÌúÿÿÿÿ
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(²¼œ¦
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(Âù¹“şÿÿÿÿ
-Ksquid:S2696"6Make the enclosing method "static" or remove this set.(µò¶²
-Ksquid:S2696"6Make the enclosing method "static" or remove this set.(×ÔİÕ
-Psquid:S2696"6Make the enclosing method "static" or remove this set.(éƒ­¡øÿÿÿÿ
-Psquid:S2696"6Make the enclosing method "static" or remove this set.(ú¬Øúÿÿÿÿ
-Psquid:S2696"6Make the enclosing method "static" or remove this set.(Î«“üÿÿÿÿ
-Psquid:S2696"6Make the enclosing method "static" or remove this set.(¶ë¸°ùÿÿÿÿ
-Ksquid:S2696"6Make the enclosing method "static" or remove this set.(íñÈ«
-Psquid:S2696"6Make the enclosing method "static" or remove this set.(¸ÆšÅüÿÿÿÿ
-Psquid:S2696"6Make the enclosing method "static" or remove this set.(­™ã¡ÿÿÿÿÿ
-Psquid:S2696"6Make the enclosing method "static" or remove this set.(Ó¾¿æüÿÿÿÿ
-Psquid:S2696"6Make the enclosing method "static" or remove this set.(²½‹úÿÿÿÿÿ
-Ksquid:S2696"6Make the enclosing method "static" or remove this set.(èœÓÏ
-Psquid:S2696"6Make the enclosing method "static" or remove this set.(ÌÎ“æûÿÿÿÿ
-Ksquid:S2696"6Make the enclosing method "static" or remove this set.(â‘³‹
-Ksquid:S2696"6Make the enclosing method "static" or remove this set.(«ìÚ
-Psquid:S2696"6Make the enclosing method "static" or remove this set.(–£‡ÿÿÿÿÿ
-Ksquid:S2696"6Make the enclosing method "static" or remove this set.(°¶®½
-Psquid:S2696"6Make the enclosing method "static" or remove this set.(˜üåıÿÿÿÿ
-Psquid:S2696"6Make the enclosing method "static" or remove this set.(Ô´Ë øÿÿÿÿ
-Psquid:S2696"6Make the enclosing method "static" or remove this set.(”™æ¨ùÿÿÿÿ
-Psquid:S2696"6Make the enclosing method "static" or remove this set.(³Áü–úÿÿÿÿ
-Ksquid:S2696"6Make the enclosing method "static" or remove this set.(æÊêé
-Psquid:S2696"6Make the enclosing method "static" or remove this set.(Ÿ›×¹üÿÿÿÿ
-Ksquid:S2696"6Make the enclosing method "static" or remove this set.(æÊêé
-Ksquid:S2696"6Make the enclosing method "static" or remove this set.(¿òè
-Ksquid:S2696"6Make the enclosing method "static" or remove this set.(ïĞÍ£
-Ksquid:S2696"6Make the enclosing method "static" or remove this set.(æÊêé
-_squid:HiddenFieldCheck"?Rename "driver_info" which hides the field declared at line 90.(®ª‡ã
-_squid:HiddenFieldCheck"?Rename "driver_info" which hides the field declared at line 90.(®ª‡ã
-Lsquid:S1135"2Complete the task associated to this TODO comment.(ÕÌ®şÿÿÿÿ
-Lsquid:S1135"2Complete the task associated to this TODO comment.(ÕÌ®şÿÿÿÿ
-Jsquid:S1481"0Remove this unused "pref_editor" local variable.(Æÿÿÿÿÿ
-Bsquid:S1481"(Remove this unused "key" local variable.(óœ‘¾üÿÿÿÿ
-gsquid:S3776"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(Ù«µ§
-[squid:S2142"FEither re-interrupt this method or rethrow the "InterruptedException".(ä ¹€
-–squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(¹Ş‰
-–squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(¹Ş‰
-–squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(¹Ş‰
-–squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(¹Ş‰
-Bsquid:S1185"(Remove this method to simply inherit it.(èüù±ùÿÿÿÿ
-Ysquid:S1854"?Remove this useless assignment to local variable "pref_editor".(Æÿÿÿÿÿ
-Qsquid:S1854"7Remove this useless assignment to local variable "key".(óœ‘¾üÿÿÿÿ
-Zsquid:S2147"ECombine this catch with the one at line 472, which has the same body.(ä ¹€
-usquid:S00115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(ËùÓóøÿÿÿÿ
-lsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Æÿÿÿÿÿ
-lsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(×¸Ş’øÿÿÿÿ
-gsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(®ª‡ã
-gsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(®ª‡ã
-lsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ßÉÙıúÿÿÿÿ
-fsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¶Õ€0
-lsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‹Öæƒùÿÿÿÿ
-lsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(³‹¦·úÿÿÿÿ
-gsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(èŞ»·
-gsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(’ãß
-lsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Òé°Àüÿÿÿÿ
-lsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Êˆ×˜üÿÿÿÿ
-gsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÿÌú
-fsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‰¥ç
-Qsquid:UselessImportCheck"*Remove this unused import 'java.sql.Time'.(Üå»‰şÿÿÿÿ
-tsquid:UselessImportCheck"MRemove this unused import 'com.google.android.gms.location.LocationListener'.(„§û›ıÿÿÿÿ
-Ssquid:UselessImportCheck"1Remove this unused import 'android.os.AsyncTask'.(À»¥—
-isquid:UselessImportCheck"BRemove this unused import 'com.google.firebase.auth.FirebaseUser'.(’àíĞùÿÿÿÿ
-\squid:UselessImportCheck":Remove this unused import 'android.content.ContentValues'.(å’µŞ
-]squid:UselessImportCheck"6Remove this unused import 'android.location.Location'.(›¡ì®øÿÿÿÿ
-gsquid:UselessImportCheck"@Remove this unused import 'android.support.annotation.Nullable'.(Ö‹øïüÿÿÿÿ
-dsquid:UselessImportCheck"CRemove this unused import 'android.support.design.widget.Snackbar'.( À®p
-ƒsquid:UselessImportCheck"\Remove this unused import 'com.example.adarsh.quickliftdriver.services.NotificationService'.(®èğşÿÿÿÿ
-squid:UselessImportCheck"XRemove this unused import 'com.example.adarsh.quickliftdriver.Util.LoginDurationThread'.(Ï”´ğıÿÿÿÿ
-ssquid:UselessImportCheck"LRemove this unused import 'android.support.design.widget.CoordinatorLayout'.(ÛÛÊÙşÿÿÿÿ
-rsquid:UselessImportCheck"KRemove this unused import 'com.google.android.gms.common.ConnectionResult'.(öÎãçüÿÿÿÿ
-`squid:UselessImportCheck"?Remove this unused import 'android.support.annotation.NonNull'.(¼Åß
-Xsquid:UselessImportCheck"1Remove this unused import 'android.telecom.Call'.(³ì“õşÿÿÿÿ
-rsquid:UselessImportCheck"KRemove this unused import 'com.google.android.gms.maps.SupportMapFragment'.(ğ¤Çÿÿÿÿÿ
-csquid:UselessImportCheck"<Remove this unused import 'android.content.DialogInterface'.(Š­›¨şÿÿÿÿ
-[squid:UselessImportCheck"4Remove this unused import 'android.database.Cursor'.(Ôäåúÿÿÿÿ
-Qsquid:UselessImportCheck"/Remove this unused import 'java.util.Iterator'.(¥ÍòÕ
-Zsquid:UselessImportCheck"3Remove this unused import 'android.graphics.Color'.(øãíòşÿÿÿÿ
-`squid:UselessImportCheck"?Remove this unused import 'android.support.v7.app.AlertDialog'.(È­˜ 
-=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
-=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
-=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
-=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
-0squid:S1700"Rename field "welcome"(ÍóéŠÿÿÿÿÿ
-[
-squid:S899"BDo something with the "boolean" value returned by "createNewFile".(´¸ö×şÿÿÿÿ

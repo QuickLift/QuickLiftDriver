@@ -24,16 +24,20 @@
             android:id="@+id/type"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:layout_weight="1"/>
+            android:textSize="18sp"
+            android:layout_weight="1"
+            android:gravity="center"/>
         <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:layout_weight="1"/>
+            android:textSize="18sp"
+            android:layout_weight="1"
+            android:gravity="center"/>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:src="@drawable/ic_action_name"
+            android:src="@drawable/ic_action_arrow"
             android:layout_weight="1"/>
     </LinearLayout>
 
@@ -61,11 +65,13 @@
             android:layout_alignParentStart="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="18sp"
             android:text="Name of the customer"/>
         <TextView
             android:id="@+id/c_pick_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="15sp"
             android:text="Address of the customer"
             android:layout_below="@+id/c_pick_name"/>
         <ImageButton
@@ -73,6 +79,7 @@
             android:layout_gravity="right"
             android:layout_alignParentEnd="true"
             android:layout_width="90dp"
+            android:background="@color/back_color"
             android:layout_height="match_parent"
             android:src="@drawable/ic_action_navigation"/>
     </RelativeLayout>
@@ -135,12 +142,14 @@
             android:id="@+id/c_drop_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Address of the customer"/>
+            android:text="Address of the customer"
+            android:textSize="18sp"/>
         <ImageButton
             android:id="@+id/drop_navigation"
             android:layout_gravity="right"
             android:layout_alignParentEnd="true"
             android:layout_width="90dp"
+            android:background="@color/back_color"
             android:layout_height="match_parent"
             android:src="@drawable/ic_action_navigation"/>
     </RelativeLayout>
@@ -148,6 +157,7 @@
         android:id="@+id/end_trip"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:background="@color/back_color"
         android:layout_alignParentStart="true">
         <Button
             android:id="@+id/end_trip_btn"

@@ -1,136 +1,0 @@
-
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.( ¨†åşÿÿÿÿ
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(àö™Š
-Ksquid:S2696"6Make the enclosing method "static" or remove this set.(•Ê¨
-Psquid:S2696"6Make the enclosing method "static" or remove this set.(¹çíöøÿÿÿÿ
-nsquid:S00116"SRename this field "loc_pref" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ô¯Ó£øÿÿÿÿ
-psquid:UselessImportCheck"IRemove this unused import 'com.google.android.gms.location.places.Place'.(—û‰Øıÿÿÿÿ
-Tsquid:S1854":Remove this useless assignment to local variable "marker".(¬Ü¢²úÿÿÿÿ
-Ksquid:S2696"6Make the enclosing method "static" or remove this set.(£’É£
-lsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ßÉÙıúÿÿÿÿ
-Psquid:S2696"6Make the enclosing method "static" or remove this set.(§‚ûıÿÿÿÿ
-Psquid:S2696"6Make the enclosing method "static" or remove this set.(æÔïÈÿÿÿÿÿ
-osquid:S00116"TRename this field "ride_info" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ô¯Ó£øÿÿÿÿ
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ÏúÒŠ
-Ksquid:S2696"6Make the enclosing method "static" or remove this set.(ƒé×§
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(çÓçºşÿÿÿÿ
-asquid:S1192"GDefine a constant instead of duplicating this literal "en_lng" 6 times.(¨Å„Éşÿÿÿÿ
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(£’¿¤
-Nsquid:S1854":Remove this useless assignment to local variable "source".(äÏµ
-@squid:S1659"+Declare "drop_location" on a separate line.(ÍÚÊ
-@squid:S1659"&Declare "end_trip" on a separate line.(üÑâ»ûÿÿÿÿ
-Ysquid:S1854"?Remove this useless assignment to local variable "destination".(‡æÇãşÿÿÿÿ
-gsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‚÷ÿé
-=squid:S1659"(Declare "cancel_btn" on a separate line.(œ»×Ã
-msquid:S3008"XRename this field "drop_location" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÍÚÊ
-Bsquid:S1659"(Declare "start_trip" on a separate line.(üÑâ»ûÿÿÿÿ
-asquid:S1192"GDefine a constant instead of duplicating this literal "st_lat" 6 times.(—¾‡üûÿÿÿÿ
-gsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ºÕÔ«
-Asquid:S1659"'Declare "longitude" on a separate line.(åÀ¤ıÿÿÿÿ
-lsquid:S3008"WRename this field "pick_address" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÍÚÊ
-nsquid:S00116"SRename this field "dest_loc" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ê†âÆşÿÿÿÿ
-@squid:S1659"&Declare "loc_pref" on a separate line.(Ô¯Ó£øÿÿÿÿ
-nsquid:S00116"SRename this field "curr_loc" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ê†âÆşÿÿÿÿ
-jsquid:S3008"URename this field "locate_btn" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(œ»×Ã
-Ksquid:S2696"6Make the enclosing method "static" or remove this set.(¢ÌÙ¾
-Esquid:S1481"+Remove this unused "marker" local variable.(¬Ü¢²úÿÿÿÿ
-?squid:S00108")Either remove or fill this block of code.(±•å•
-<squid:S1659""Declare "drop" on a separate line.(üÑâ»ûÿÿÿÿ
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(Çû¦Ğ
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(äÍÃüüÿÿÿÿ
->squid:S1659")Declare "locate_name" on a separate line.(ÍÚÊ
-csquid:HiddenFieldCheck"CRename "googleApiClient" which hides the field declared at line 86.(Œúäé
-usquid:S00115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(ËùÓóøÿÿÿÿ
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ª˜—é
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(œ¯Èú
-fsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Õ†‘
-fsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¶Õ€0
-Ksquid:S2696"6Make the enclosing method "static" or remove this set.(¥ªôï
-Dsquid:S1068"/Remove this unused "locate_name" private field.(ÍÚÊ
-lsquid:S00116"VRename this field "marker_drop" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(êÂšá
-Asquid:S1659"'Declare "ride_info" on a separate line.(Ô¯Ó£øÿÿÿÿ
->squid:S1659"$Declare "cancel" on a separate line.(üÑâ»ûÿÿÿÿ
-:squid:S2129" Remove this "String" constructor(àÇªùÿÿÿÿ
-Psquid:S2696"6Make the enclosing method "static" or remove this set.(ŒØÊËøÿÿÿÿ
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(²¼œ¦
-Psquid:S2696"6Make the enclosing method "static" or remove this set.(×½Ø±úÿÿÿÿ
-Psquid:S2696"6Make the enclosing method "static" or remove this set.(õÏ¾üÿÿÿÿ
-asquid:S1192"LDefine a constant instead of duplicating this literal "destination" 4 times.(·Ì»Í
-Ksquid:S2696"6Make the enclosing method "static" or remove this set.(¬ış
-Asquid:S1659",Declare "start_trip_btn" on a separate line.(œ»×Ã
-msquid:S3008"SRename this field "end_trip" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(üÑâ»ûÿÿÿÿ
-@squid:S1659"&Declare "pick_loc" on a separate line.(Ê†âÆşÿÿÿÿ
-?squid:S1659"*Declare "end_trip_btn" on a separate line.(œ»×Ã
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(õùÔºşÿÿÿÿ
-5squid:S2129" Remove this "String" constructor(Áœ”×
-lsquid:S00116"VRename this field "marker_pick" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(êÂšá
-@squid:S1659"&Declare "dest_loc" on a separate line.(Ê†âÆşÿÿÿÿ
-–squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(¹Ş‰
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ªÂ“‹üÿÿÿÿ
-jsquid:S3008"URename this field "cancel_btn" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(œ»×Ã
-S"squid:SwitchLastCaseIsDefaultCheck""Add a default case to this switch.(×ö³–úÿÿÿÿ
-Šsquid:S1319"pThe type of the "route" object should be an interface such as "List" rather than the implementation "ArrayList".(©ˆ—»øÿÿÿÿ
-ksquid:S3008"VRename this field "locate_name" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÍÚÊ
-dsquid:S1192"JDefine a constant instead of duplicating this literal "Response/" 3 times.(Ü…óùÿÿÿÿ
-isquid:S3008"TRename this field "pick_name" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÍÚÊ
-–squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(Şİ¡®
-=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
-msquid:S3008"SRename this field "pick_nav" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ñ†äÍÿÿÿÿÿ
-msquid:S3008"SRename this field "drop_nav" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ñ†äÍÿÿÿÿÿ
-Psquid:S2696"6Make the enclosing method "static" or remove this set.(Ş„”Œÿÿÿÿÿ
-?squid:S1481"+Remove this unused "source" local variable.(äÏµ
-@squid:S1481"+Remove this unused "userId" local variable.(–Õ®
-Xsquid:S1155">Use isEmpty() to check whether the collection is empty or not.(ğ¡ Óşÿÿÿÿ
-Jsquid:S1481"0Remove this unused "destination" local variable.(‡æÇãşÿÿÿÿ
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(±‰‘ııÿÿÿÿ
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(éœéÆùÿÿÿÿ
-Ksquid:S2696"6Make the enclosing method "static" or remove this set.(§£Ûš
-?squid:S00108")Either remove or fill this block of code.(±•å•
-gsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(€ğ´
-asquid:S1192"GDefine a constant instead of duplicating this literal "en_lat" 6 times.(¨Å„Éşÿÿÿÿ
-lsquid:S3008"WRename this field "end_trip_btn" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(œ»×Ã
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(·‰¸¶
-Psquid:S2696"6Make the enclosing method "static" or remove this set.(úº²áıÿÿÿÿ
-Ksquid:S2696"6Make the enclosing method "static" or remove this set.(«ƒ¶°
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ëıÕÂÿÿÿÿÿ
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(çÓçºşÿÿÿÿ
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(¶ñò
-nsquid:S00116"SRename this field "pick_loc" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ê†âÆşÿÿÿÿ
-gsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(’ãß
-?squid:S1659"*Declare "pick_address" on a separate line.(ÍÚÊ
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ÇŸ©ÿÿÿÿÿ
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(™ºÛùÿÿÿÿ
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(´€–­
-]squid:UnusedPrivateMethod"5Remove this unused private "getRouteToMarker" method.(ã”È·ıÿÿÿÿ
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ª•’ç
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(İÓã¨øÿÿÿÿ
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(©¹©›üÿÿÿÿ
-asquid:S1192"GDefine a constant instead of duplicating this literal "st_lng" 6 times.(—¾‡üûÿÿÿÿ
->squid:S1659")Declare "marker_drop" on a separate line.(êÂšá
-nsquid:S3008"YRename this field "start_trip_btn" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(œ»×Ã
-esquid:S1301"KReplace this "switch" statement by "if" statements to increase readability.(×ö³–úÿÿÿÿ
-lsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(û·ÉÆúÿÿÿÿ
-Ssquid:S1155">Use isEmpty() to check whether the collection is empty or not.(›€Óß
-Qsquid:UnusedPrivateMethod"/Remove this unused private "addMarkers" method.(™ùàU
-Osquid:S1854":Remove this useless assignment to local variable "userId".(–Õ®
-lsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‹Öæƒùÿÿÿÿ
-lsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¹·éşûÿÿÿÿ
->squid:S1659"$Declare "locate" on a separate line.(üÑâ»ûÿÿÿÿ
-›squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(³ÆÌ¶øÿÿÿÿ
-N"squid:SwitchLastCaseIsDefaultCheck""Add a default case to this switch.(Û ‰¹
-›squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(¢İ‰¥ùÿÿÿÿ
-psquid:S3923"[Remove this conditional structure or edit its code blocks so that they're not all the same.(Ù Öñ
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(õÌ´ı
-Psquid:S2696"6Make the enclosing method "static" or remove this set.(•ı™Çùÿÿÿÿ
-lsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¹õùÿÿÿÿ
-nsquid:UselessImportCheck"LRemove this unused import 'com.google.android.gms.plus.model.people.Person'.(º•Ì
-Osquid:S2209"5Change this instance-reference to a static reference.(×½Ø±úÿÿÿÿ
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ƒ’Îüÿÿÿÿ
-Tsquid:S1854"?Remove this useless assignment to local variable "mapFragment".(ôË¼û
-@squid:S1659"&Declare "drop_nav" on a separate line.(Ñ†äÍÿÿÿÿÿ
-Msquid:S1197"8Move the array designator from the variable to the type.(¯ÜÑñ
-osquid:S3008"URename this field "start_trip" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(üÑâ»ûÿÿÿÿ
-lsquid:S00116"QRename this field "log_id" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ô¯Ó£øÿÿÿÿ
-esquid:CallToDeprecatedMethod"8Remove this use of "FusedLocationApi"; it is deprecated.(«ƒ¶°8’íÚ§,
-`squid:CallToDeprecatedMethod"3Remove this use of "SettingsApi"; it is deprecated.(—¯è‚8’íÚ§,
-osquid:MaximumInheritanceDepth"<This class has 6 parents which is greater than 5 authorized.(³šÙ«şÿÿÿÿ8’íÚ§,

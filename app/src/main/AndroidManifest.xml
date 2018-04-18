@@ -71,6 +71,7 @@
         <activity android:name=".activities.TripHandlerActivity" />
         <activity
             android:name=".activities.MapActivity"
+            android:finishOnTaskLaunch="true"
             android:label="@string/title_activity_map" />
         <activity
             android:name=".activities.RequestActivity"
@@ -94,7 +95,11 @@
         <service
             android:name=".services.ShareRideCheckingService"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="true" />
+        <service
+            android:name=".services.OngoingRideService"
+            android:enabled="true"
+            android:exported="false"></service>
     </application>
 
 </manifest>

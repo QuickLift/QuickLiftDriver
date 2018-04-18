@@ -2,9 +2,12 @@ package com.example.adarsh.quickliftdriver.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.net.PortUnreachableException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,6 +40,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         login = getApplicationContext().getSharedPreferences("Login",MODE_PRIVATE);
         db = FirebaseDatabase.getInstance().getReference("Drivers");
 
@@ -62,18 +67,36 @@ public class ProfileActivity extends AppCompatActivity {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HashMap<String,Object> map = new HashMap<>();
-                map.put("phone",mobile.getText().toString());
-                map.put("email",email.getText().toString());
-                map.put("address",address.getText().toString());
-                map.put("rate",Integer.toString(rate.getNumStars()));
+                if (validate()){
+                    HashMap<String,Object> map = new HashMap<>();
+                    map.put("phone",mobile.getText().toString());
+                    map.put("email",email.getText().toString());
+                    map.put("address",address.getText().toString());
+                    map.put("rate",Integer.toString(rate.getNumStars()));
 
-                db.child(login.getString("id",null)).updateChildren(map);
-                Toast.makeText(ProfileActivity.this, "Confirm btn is pressed", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(ProfileActivity.this,Welcome.class);
-                startActivity(intent);
+                    db.child(login.getString("id",null)).updateChildren(map);
+                    finish();
+                }
             }
         });
+    }
+
+    private boolean validate(){
+        boolean status = false;
+        if (TextUtils.isEmpty(mobile.getText().toString().trim())){
+            mobile.setError("Mobile number should not be empty");
+        }else if (mobile.getText().toString().trim().length() != 10){
+            mobile.setError("Mobile number should be 10 digit");
+        }else if (TextUtils.isEmpty(email.getText().toString().trim())){
+            email.setError("Email should not be empty");
+        }else if (!Patterns.EMAIL_ADDRESS.matcher(email.getText().toString().trim()).matches()){
+            email.setError("Please enter a valid email address");
+        }else if (TextUtils.isEmpty(address.getText().toString().trim())){
+            address.setError("Address should not be empty");
+        }else {
+            status = true;
+        }
+        return status;
     }
 
     @Override

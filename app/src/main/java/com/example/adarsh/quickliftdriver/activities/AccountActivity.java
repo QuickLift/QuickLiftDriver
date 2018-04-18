@@ -2,8 +2,10 @@ package com.example.adarsh.quickliftdriver.activities;
 
 import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -23,8 +25,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +48,7 @@ public class AccountActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         myCalendar = Calendar.getInstance();
         from_date= (EditText) findViewById(R.id.from_date);
@@ -78,26 +83,27 @@ public class AccountActivity extends AppCompatActivity {
     // load button
     @SuppressWarnings("deprecation")
     public void load_btn(View view) {
-        if(from_date.getText().toString().isEmpty() &&to_date.getText().toString().isEmpty()){
-            Toast.makeText(this, "Please enter your field", Toast.LENGTH_SHORT).show();
-        }else{
+        if (validate()){
+            if(from_date.getText().toString().isEmpty() &&to_date.getText().toString().isEmpty()){
+                Toast.makeText(this, "Please enter your field", Toast.LENGTH_SHORT).show();
+            }else{
 
-            db= FirebaseDatabase.getInstance().getReference("Driver_Account_Info/"+preferences.getString("id",null));
-            db.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    String fromDate=from_date.getText().toString();
-                    String toDate=to_date.getText().toString();
+                db= FirebaseDatabase.getInstance().getReference("Driver_Account_Info/"+preferences.getString("id",null));
+                db.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String fromDate=from_date.getText().toString();
+                        String toDate=to_date.getText().toString();
 
-                    List<RideHistory> rideHistoryList = new ArrayList<>();
+                        List<RideHistory> rideHistoryList = new ArrayList<>();
 
                         for (DataSnapshot data : dataSnapshot.getChildren()) {
-                                RideHistory rideHistory = new RideHistory();
-                                if (fromDate.compareToIgnoreCase(data.getKey()) <= 0 && toDate.compareToIgnoreCase(data.getKey()) >= 0) {
+                            RideHistory rideHistory = new RideHistory();
+                            if (fromDate.compareToIgnoreCase(data.getKey()) <= 0 && toDate.compareToIgnoreCase(data.getKey()) >= 0) {
                                 Log.i("AccountActivity", "data.getKey():::  " + data.getKey());
                                 Log.i("AccountActivity", "data.getValue():::  " + data.getValue().toString());
-                                    Feed feed = new Feed();
-                                    for(DataSnapshot actualFeed : data.getChildren() ) {
+                                Feed feed = new Feed();
+                                for(DataSnapshot actualFeed : data.getChildren() ) {
                                     Map<String, String> feedMap  = (Map<String, String>) actualFeed.getValue();
                                     feed.setBookedRideCount(Integer.parseInt(feedMap.get("book")));
                                     feed.setCanceledRidesCount(Integer.parseInt(feedMap.get("cancel")));
@@ -118,18 +124,18 @@ public class AccountActivity extends AppCompatActivity {
                             }
                         }
 
-                   // ArrayAdapter<String>arrayAdapter = new ArrayAdapter<String>(this, R.layout.custom_feed_item,rideHistoryList);
+                        // ArrayAdapter<String>arrayAdapter = new ArrayAdapter<String>(this, R.layout.custom_feed_item,rideHistoryList);
 
 
-                }
+                    }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                }
-            });
+                    }
+                });
+            }
         }
-
     }
 
     DatePickerDialog.OnDateSetListener fromDate = new DatePickerDialog.OnDateSetListener() {
@@ -160,5 +166,29 @@ public class AccountActivity extends AppCompatActivity {
     private void updateToLabel(int year,int month,int day){
         to_date.setText(new StringBuilder().append(year).append("-")
                 .append(month+1).append("-").append(day));
+    }
+
+    private boolean validate(){
+        boolean status = false;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+        try{
+            if (from_date.getText().toString().isEmpty()){
+                from_date.setError("From date should not be empty");
+            }else if (to_date.getText().toString().isEmpty()){
+                to_date.setError("To date should not be empty");
+            }else{
+                Date from = sdf.parse(from_date.getText().toString().trim());
+                Date to = sdf.parse(to_date.getText().toString().trim());
+                if (from.after(to)){
+                    from_date.setError("From date should not greater than To date");
+                }else {
+                    status = true;
+                }
+            }
+        }catch(Exception e){
+            Log.e("TAG",""+e.getLocalizedMessage());
+            status = false;
+        }
+        return status;
     }
 }

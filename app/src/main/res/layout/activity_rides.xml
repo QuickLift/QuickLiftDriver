@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:text="Current Ride"
-        android:visibility="gone"/>
+        android:background="@color/front_color"/>
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"

@@ -2,6 +2,7 @@ package com.example.adarsh.quickliftdriver.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -28,6 +29,7 @@ public class RequestActivity extends FragmentActivity implements OnMapReadyCallb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -39,6 +41,7 @@ public class RequestActivity extends FragmentActivity implements OnMapReadyCallb
         cancel = (Button)findViewById(R.id.cancel_btn);
         user_name = (TextView)findViewById(R.id.user_name);
         user_add = (TextView)findViewById(R.id.user_add);
+
 
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +79,6 @@ public class RequestActivity extends FragmentActivity implements OnMapReadyCallb
     protected void onStart() {
         super.onStart();
         user_name.setText(preferences.getString("name",null));
-        user_add.setText(preferences.getString("add",null));
+        user_add.setText(preferences.getString("source",null));
     }
 }

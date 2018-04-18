@@ -45,9 +45,30 @@ public class RidesActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        DatabaseReference driver_status = FirebaseDatabase.getInstance().getReference("Status/"+log_id.getString("id",null));
+        driver_status.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    curr_ride.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rides);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         curr_ride = (Button)findViewById(R.id.curr_ride);
         curr_ride.setVisibility(View.GONE);
@@ -63,20 +84,6 @@ public class RidesActivity extends AppCompatActivity {
         log_id = getApplicationContext().getSharedPreferences("Login", MODE_PRIVATE);
         db= FirebaseDatabase.getInstance().getReference("Rides");
 
-        final DatabaseReference c_ride = FirebaseDatabase.getInstance().getReference("CustomersRequests/"+log_id.getString("id",null));
-        c_ride.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getChildrenCount() > 0){
-                    curr_ride.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
         list=(ListView)findViewById(R.id.list);
 
         db.orderByChild("driver").equalTo(log_id.getString("id",null)).addListenerForSingleValueEvent(new ValueEventListener() {
