@@ -49,7 +49,7 @@ public class OngoingRideService extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(Intent intent, int flags, final int startId) {
 
         log_id = getSharedPreferences("Login",MODE_PRIVATE);
         customerReq= FirebaseDatabase.getInstance().getReference("CustomerRequests/"+log_id.getString("id",null));
@@ -111,8 +111,11 @@ public class OngoingRideService extends Service {
                         dropModel.setLng(Double.parseDouble(ride_info.getString("en_lng",null)));
                         dropModel.setLatLng(new LatLng(Double.parseDouble(ride_info.getString("en_lat",null)),Double.parseDouble(ride_info.getString("en_lng",null))));
 
+                        Log.i("TAG","Stack Size : "+stack.size());
                         stack.push(dropModel);
+                        Log.i("TAG","Stack Size : "+stack.size());
                         stack.push(model);
+                        Log.i("TAG","Stack Size : "+stack.size());
                     }
                 }else {
                     stopSelf();
