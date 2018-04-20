@@ -8,7 +8,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="105sp"
         android:layout_gravity="center"
         android:background="@color/back_color">
         <TextView
@@ -20,16 +20,19 @@
             android:layout_marginStart="15dp"
             android:gravity="center_vertical"
             android:hint="Name Of Customer"
-            android:textSize="22sp" />
+            android:textSize="25sp"
+            android:textColor="#000000"/>
+
         <Button
             android:id="@+id/cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:gravity="center_vertical"
-            android:background="#e21d1d"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="13dp"
+            android:background="#F44336"
             android:padding="5dp"
-            android:layout_margin="10dp"
-            android:text="CANCEL TRIP"/>
+            android:text="CANCEL TRIP"
+            android:textColor="#000000" />
     </RelativeLayout>
 </android.support.v7.widget.CardView>

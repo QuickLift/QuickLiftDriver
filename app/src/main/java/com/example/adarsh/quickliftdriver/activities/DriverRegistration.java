@@ -19,6 +19,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -53,7 +54,7 @@ public class DriverRegistration extends AppCompatActivity {
     Uri selectedImage=null;
     private StorageReference mStorageRef;
     private static DatabaseHelper db;
-    DatabaseReference user_db= FirebaseDatabase.getInstance().getReference("Drivers/");
+    DatabaseReference user_db= FirebaseDatabase.getInstance().getReference("Drivers");
 
     @Override
     public void onBackPressed() {
@@ -124,13 +125,13 @@ public class DriverRegistration extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
-                                //Log.d(TAG, "createUserWithEmail:success");
+                                Log.d("TAG", "createUserWithEmail:success");
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 sendEmailVerification();
                                 updateUI(user);
                             } else {
                                 // If sign in fails, display a message to the user.
-                                //Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                Log.i("TAG", "createUserWithEmail:failure", task.getException());
                                 Toast.makeText(DriverRegistration.this, "Authentication failed."+task.getException(), Toast.LENGTH_SHORT).show();
                                 updateUI(null);
                             }
@@ -185,9 +186,9 @@ public class DriverRegistration extends AppCompatActivity {
 //                Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
             }
 
-            Toast.makeText(this, "Successfully Registered !", Toast.LENGTH_SHORT).show();
             user_db.child(user.getUid()).setValue(driver);
             mAuth.signOut();
+            Toast.makeText(this, "Successfully Registered !", Toast.LENGTH_SHORT).show();
             finish();
         } else {
             Toast.makeText(this, "Data not entered !", Toast.LENGTH_SHORT).show();

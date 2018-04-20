@@ -235,48 +235,49 @@ public class Welcome extends AppCompatActivity implements Runnable
     }
 
     private void logOut(){
-        editor = pref.edit();
-        editor.putBoolean("status",false);
-        editor.commit();
-        databaseHelper.insertLoginData(welcome.getString("date",null),"logout","100.0ms");
-        stopService(requestService);
-        login_status.setText("Logout");
-        logout_time = new Date();
-        login_time = new Date(welcome.getString("login_time",null));
+        if (welcome.contains("login_time")){
+            DatabaseReference cus=FirebaseDatabase.getInstance().getReference("DriversAvailable/"+log_id.getString("type",null)+"/"+log_id.getString("id",null));
+            cus.removeValue();
+            editor = pref.edit();
+            editor.putBoolean("status",false);
+            editor.commit();
+            databaseHelper.insertLoginData(welcome.getString("date",null),"logout","100.0ms");
+            stopService(requestService);
+            login_status.setText("Logout");
+            logout_time = new Date();
+            login_time = new Date(welcome.getString("login_time",null));
 
-        long diff = logout_time.getTime() - login_time.getTime();
+            long diff = logout_time.getTime() - login_time.getTime();
 
-        long diffSeconds = diff / 1000 % 60;
-        long diffMinutes = diff / (60 * 1000) % 60;
-        long diffHours = diff / (60 * 60 * 1000);
-        String second,minute,hour;
-        if (diffSeconds < 10){
-            second = "0"+diffSeconds;
-        }else {
-            second = ""+diffSeconds;
+            long diffSeconds = diff / 1000 % 60;
+            long diffMinutes = diff / (60 * 1000) % 60;
+            long diffHours = diff / (60 * 60 * 1000);
+            String second,minute,hour;
+            if (diffSeconds < 10){
+                second = "0"+diffSeconds;
+            }else {
+                second = ""+diffSeconds;
+            }
+            if (diffMinutes < 10){
+                minute = "0"+diffMinutes;
+            }else {
+                minute = ""+diffMinutes;
+            }
+            if (diffHours < 10){
+                hour = "0"+diffHours;
+            }else {
+                hour = ""+diffHours;
+            }
+            String dura = hour+":"+minute+":"+second+" hr";
+            login_duration.setText(dura);
+            driver_info = FirebaseDatabase.getInstance().getReference("Driver_Login_Info/"+log_id.getString("id",null)+"/"+welcome.getString("date",null));
+            HashMap<String,Object> map = new HashMap<>();
+            map.put("Login_Time",login_time.toString());
+            map.put("Logout_Time",logout_time.toString());
+            map.put("Duration",dura);
+            driver_info.push().setValue(map);
+
         }
-        if (diffMinutes < 10){
-            minute = "0"+diffMinutes;
-        }else {
-            minute = ""+diffMinutes;
-        }
-        if (diffHours < 10){
-            hour = "0"+diffHours;
-        }else {
-            hour = ""+diffHours;
-        }
-        String dura = hour+":"+minute+":"+second+" hr";
-        login_duration.setText(dura);
-        driver_info = FirebaseDatabase.getInstance().getReference("Driver_Login_Info/"+log_id.getString("id",null)+"/"+welcome.getString("date",null));
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("Login_Time",login_time.toString());
-        map.put("Logout_Time",logout_time.toString());
-        map.put("Duration",dura);
-        driver_info.push().setValue(map);
-
-
-        DatabaseReference cus=FirebaseDatabase.getInstance().getReference("DriversAvailable/"+type+"/"+log_id.getString("id",null));
-        cus.removeValue();
     }
     @Override
     public void run() {
@@ -332,14 +333,14 @@ public class Welcome extends AppCompatActivity implements Runnable
 
             if (log_id.getString("ride",null).equals("")) {
                 String userId = log_id.getString("id",null);
-                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("DriversAvailable/"+type);
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("DriversAvailable/"+log_id.getString("type",null));
 //            ref.push().setValue("hello");
                 GeoFire geoFire = new GeoFire(ref);
                 geoFire.setLocation(userId,new GeoLocation(latitude,longitude));
             }
             else {
                 String userId= log_id.getString("id",null);
-                DatabaseReference ref=FirebaseDatabase.getInstance().getReference("DriversWorking/"+type);
+                DatabaseReference ref=FirebaseDatabase.getInstance().getReference("DriversWorking/"+log_id.getString("type",null));
 
                 GeoFire geoFire=new GeoFire(ref);
                 geoFire.setLocation(userId,new GeoLocation(latitude,longitude));
@@ -350,10 +351,10 @@ public class Welcome extends AppCompatActivity implements Runnable
         @Override
         protected void onDestroy() {
             super.onDestroy();
-//            editor = pref.edit();
-//            editor.putBoolean("status",false);
-//            editor.commit();
-            //logOut();
+            editor = pref.edit();
+            editor.putBoolean("status",false);
+            editor.commit();
+            logOut();
         }
 
         @Override

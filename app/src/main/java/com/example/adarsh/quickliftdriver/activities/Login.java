@@ -149,12 +149,12 @@ public class Login extends AppCompatActivity {
             editor.putString("ride","");
             editor.commit();
 
-            DatabaseReference db = FirebaseDatabase.getInstance().getReference("Drivers");
+            DatabaseReference db = FirebaseDatabase.getInstance().getReference("Drivers/");
             db.child(log_id.getString("id",null)).child("veh_type").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 //                    Log.i("TAG","I am Here : "+dataSnapshot.getValue().toString());
-                    String getType = (String) dataSnapshot.getValue();
+                    String getType = dataSnapshot.getValue().toString();
                     if (getType.equalsIgnoreCase("car")){
                         type = "Car";
                     }else if (getType.equalsIgnoreCase("bike")){

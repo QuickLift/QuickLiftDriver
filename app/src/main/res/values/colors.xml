@@ -7,4 +7,5 @@
     <color name="back_color">#05affc</color>
     <color name="list_item">#8005affc</color>
     <color name="theme_color_blue">#05affc</color>
+    <color name="nav_bar">#B305affc</color>
 </resources>

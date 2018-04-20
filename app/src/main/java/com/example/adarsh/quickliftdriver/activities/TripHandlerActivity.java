@@ -64,6 +64,7 @@ public class TripHandlerActivity extends AppCompatActivity {
             cancelTrip();
         } else if (value.equalsIgnoreCase("confirm")) {
             stack = new SequenceStack().getStack();
+            Log.i("TAG","stack size : "+stack.size());
             confirmTrip();
         }
     }
@@ -138,7 +139,9 @@ public class TripHandlerActivity extends AppCompatActivity {
         dropModel.setLatLng(new LatLng(Double.parseDouble(ride_info.getString("en_lat",null)),Double.parseDouble(ride_info.getString("en_lng",null))));
 
         stack.push(dropModel);
+        Log.i("TAG","stack size : "+stack.size());
         stack.push(model);
+        Log.i("TAG","stack size : "+stack.size());
 
         startService(new Intent(this, RouteArrangeService.class));
         db.child("accept").setValue(1);

@@ -203,9 +203,11 @@ public class RiderListActivity extends AppCompatActivity {
             name.setText(riders.get(position).getC_name());
             Log.i("TAG","name in adapter : "+name.getText().toString());
             if (riders.get(position).isEnable()){
-                cancel.setVisibility(View.VISIBLE);
+//                cancel.setVisibility(View.VISIBLE);
+                cancel.setEnabled(true);
             }else {
-                cancel.setVisibility(View.GONE);
+                cancel.setEnabled(false);
+//                cancel.setVisibility(View.GONE);
             }
             cancel.setOnClickListener(new View.OnClickListener() {
                 @Override

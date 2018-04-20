@@ -29,7 +29,7 @@ public class RoundedLayout extends RelativeLayout {
     private int mBorderWidth = 0;
     private int mBorderHalf;
     private boolean mShowBorder = false;
-    private int mBorderColor = 0xFFFF7700;
+    private int mBorderColor = 0xFF05affc;
 
     private float mDensity = 1.0f;
 
@@ -60,12 +60,12 @@ public class RoundedLayout extends RelativeLayout {
         super(context, attrs, defStyle);
         mDensity = getResources().getDisplayMetrics().density;
         // just a default for corner radius
-        mCornerRadius = pxFromDp(25f);
+        mCornerRadius = pxFromDp(135f);
 
         mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setColor(mBorderColor);
-        setBorderWidth(Math.round(pxFromDp(2f)));
+        setBorderWidth(Math.round(pxFromDp(5f)));
     }
 
     /**

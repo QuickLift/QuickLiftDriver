@@ -77,19 +77,24 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="Confirm"
-        android:background="#0EBD39"
+        android:background="@color/back_color"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_marginBottom="10dp"
+        android:textColor="#02db18"
+        android:textSize="18dp"
         android:layout_marginLeft="20dp"/>
+
     <Button
         android:id="@+id/cancel_btn"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="Cancel"
-        android:background="#F44837"
+        android:background="@color/back_color"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="10dp"
+        android:textSize="18dp"
+        android:textColor="#f56060"
         android:layout_marginRight="20dp"/>
 </RelativeLayout>

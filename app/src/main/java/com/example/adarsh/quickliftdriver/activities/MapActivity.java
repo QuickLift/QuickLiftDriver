@@ -108,7 +108,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private static Button locate_btn,start_trip_btn,end_trip_btn,cancel_btn;
     private static ImageButton pick_nav,drop_nav;
     private Stack<SequenceModel> stack;
-    private LinearLayout dest_type;
+    private RelativeLayout dest_type;
     SequenceModel model;
     int seat = 0;
     Handler handler;
@@ -156,7 +156,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         pick_nav.setOnClickListener(this);
         drop_nav = (ImageButton)findViewById(R.id.drop_navigation);
         drop_nav.setOnClickListener(this);
-        dest_type = (LinearLayout)findViewById(R.id.dest_type);
+        dest_type = (RelativeLayout) findViewById(R.id.dest_type);
         dest_type.setVisibility(View.VISIBLE);
         dest_type.setOnClickListener(this);
 
@@ -167,6 +167,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 .build();
 
         log_id=getApplicationContext().getSharedPreferences("Login",MODE_PRIVATE);
+        Log.i("OK","d_id : "+log_id.getString("id",null));
         db= FirebaseDatabase.getInstance().getReference("CustomerRequests/"+log_id.getString("id",null));
         stopService(floatingViewIntent);
 
@@ -268,7 +269,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     public void onConnected(@Nullable Bundle bundle) {
 //        Toast.makeText(this, "Map Connected", Toast.LENGTH_SHORT).show();
 
-         getCurrentLocation();
+        getCurrentLocation();
     }
 
     @Override
@@ -395,10 +396,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                         }else{
                             stack.push(model);
                             Log.i("TAG","Stack Size in map : "+stack.size());
+
                             db.child(model.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
 
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
+
                                     Map<String,Object> map =(Map<String, Object>) dataSnapshot.getValue();
 
                                     final SharedPreferences.Editor edit = ride_info.edit();
@@ -418,9 +421,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                         edit.putString("st_lat",map.get("st_lat").toString());
                                         edit.putString("st_lng",map.get("st_lng").toString());
                                     }catch(NullPointerException ne){
-                                        Log.e("TAG","Error : "+ne.getLocalizedMessage());
-                                        startActivity(new Intent(MapActivity.this,MapActivity.class));
-                                        finish();
+                                        Log.e("TAG","Error on line 424 : "+ne.getLocalizedMessage());
+//                                        startActivity(new Intent(MapActivity.this,MapActivity.class));
+//                                        finish();
                                     }
                                     DatabaseReference user = FirebaseDatabase.getInstance().getReference("Users/"+map.get("customer_id"));
                                     user.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -531,6 +534,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             }
 
             String state = ride_info.getString("state",null);
+            Log.i("OK","state on line : "+state);
             if (state.equalsIgnoreCase("pick_nav")){
                 nav_pick();
             }else if (state.equalsIgnoreCase("locate")){
@@ -548,8 +552,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             }
         }catch (Exception e){
             Log.e("TAG","Error : "+e.getLocalizedMessage());
-            startActivity(new Intent(MapActivity.this,MapActivity.class));
-            finish();
+//            startActivity(new Intent(MapActivity.this,MapActivity.class));
+//            finish();
         }
         super.onStart();
     }
