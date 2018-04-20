@@ -74,6 +74,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -99,7 +100,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private double latitude,longitude;
     private static final int REQUEST_CHECK_SETTINGS = 199;
     DatabaseReference customer=FirebaseDatabase.getInstance().getReference("Users");
-    DatabaseReference db;
+    DatabaseReference db,status_db;
     SharedPreferences log_id,loc_pref,ride_info;
     Marker marker_pick,marker_drop;
     Address address;
@@ -171,12 +172,16 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         db= FirebaseDatabase.getInstance().getReference("CustomerRequests/"+log_id.getString("id",null));
         stopService(floatingViewIntent);
 
+        status_db = FirebaseDatabase.getInstance().getReference("Status/"+log_id.getString("id",null)+"/I");
+
         handler = new Handler();
         final Runnable r = new Runnable() {
             public void run() {
                 getCurrentLocation();
                 Location l = location;
                 onLocationChanged(l);
+//                status_db.child("0").setValue(latitude);
+//                status_db.child("1").setValue(longitude);
                 handler.postDelayed(this, 10000);
             }
         };
@@ -240,24 +245,24 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
 
         if (log_id.getString("ride",null).equals("")) {
-            Toast.makeText(this, "hi", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "hi", Toast.LENGTH_SHORT).show();
             String userId = log_id.getString("id",null);
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("DriversAvailable/"+log_id.getString("type",null));
 //            ref.push().setValue("hello");
             GeoFire geoFire = new GeoFire(ref);
-            geoFire.setLocation(userId, new GeoLocation(location.getLatitude(), location.getLongitude()));
+            geoFire.setLocation(userId, new GeoLocation(latitude,longitude));
         }
         else {
             String userId= log_id.getString("id",null);
-            DatabaseReference ref=FirebaseDatabase.getInstance().getReference("DriversWorking/"+log_id.getString("type",null)+"/"+userId);
+            DatabaseReference ref=FirebaseDatabase.getInstance().getReference("DriversWorking/"+log_id.getString("type",null));
 
             GeoFire geoFire=new GeoFire(ref);
-            geoFire.setLocation(userId,new GeoLocation(location.getLatitude(),location.getLongitude()));
+            geoFire.setLocation(userId,new GeoLocation(latitude,longitude));
 
             DatabaseReference statref=FirebaseDatabase.getInstance().getReference("Status/"+userId);
 
             GeoFire statGeoFire=new GeoFire(statref);
-            statGeoFire.setLocation(userId,new GeoLocation(location.getLatitude(),location.getLongitude()));
+            statGeoFire.setLocation(userId,new GeoLocation(latitude,longitude));
         }
     }
 
@@ -367,63 +372,81 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         try{
             ride_info = getSharedPreferences("ride_info",MODE_PRIVATE);
 
-            SharedPreferences.Editor editor = ride_info.edit();
-            editor.putString("state","start");
-            editor.commit();
+//            SharedPreferences.Editor editor = ride_info.edit();
+//            editor.putString("state","start");
+//            editor.commit();
             stack = new SequenceStack().getStack();
             model = null;
             if (!stack.isEmpty()){
 //                model=new SequenceModel();
                 model = stack.pop();
-                stack.push(model);
-                db.child(model.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
-
+                DatabaseReference resp = FirebaseDatabase.getInstance().getReference("Response/"+ model.getId());
+                resp.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        Map<String,Object> map =(Map<String, Object>) dataSnapshot.getValue();
+                        String resp_value = dataSnapshot.child("resp").getValue().toString();
+                        if (!resp_value.equalsIgnoreCase("Trip Started")){
+                            stack.push(model);
+                            db.child(model.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
 
-                        final SharedPreferences.Editor edit = ride_info.edit();
-                        try{
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    Map<String,Object> map =(Map<String, Object>) dataSnapshot.getValue();
 
-                            edit.putString("accept",map.get("accept").toString());
-                            edit.putString("customer_id",map.get("customer_id").toString());
-                            edit.putString("d_lat",map.get("d_lat").toString());
-                            edit.putString("d_lng",map.get("d_lng").toString());
-                            edit.putString("destination",map.get("destination").toString());
-                            edit.putString("en_lat",map.get("en_lat").toString());
-                            edit.putString("en_lng",map.get("en_lng").toString());
-                            edit.putString("otp",map.get("otp").toString());
-                            edit.putString("price",map.get("price").toString());
-                            edit.putString("seat",map.get("seat").toString());
-                            edit.putString("source",map.get("source").toString());
-                            edit.putString("st_lat",map.get("st_lat").toString());
-                            edit.putString("st_lng",map.get("st_lng").toString());
-                        }catch(NullPointerException ne){
-                            Log.e("TAG","Error : "+ne.getLocalizedMessage());
+                                    final SharedPreferences.Editor edit = ride_info.edit();
+                                    try{
+
+                                        edit.putString("accept",map.get("accept").toString());
+                                        edit.putString("customer_id",map.get("customer_id").toString());
+                                        edit.putString("d_lat",map.get("d_lat").toString());
+                                        edit.putString("d_lng",map.get("d_lng").toString());
+                                        edit.putString("destination",map.get("destination").toString());
+                                        edit.putString("en_lat",map.get("en_lat").toString());
+                                        edit.putString("en_lng",map.get("en_lng").toString());
+                                        edit.putString("otp",map.get("otp").toString());
+                                        edit.putString("price",map.get("price").toString());
+                                        edit.putString("seat",map.get("seat").toString());
+                                        edit.putString("source",map.get("source").toString());
+                                        edit.putString("st_lat",map.get("st_lat").toString());
+                                        edit.putString("st_lng",map.get("st_lng").toString());
+                                    }catch(NullPointerException ne){
+                                        Log.e("TAG","Error : "+ne.getLocalizedMessage());
+                                        startActivity(new Intent(MapActivity.this,MapActivity.class));
+                                        finish();
+                                    }
+                                    DatabaseReference user = FirebaseDatabase.getInstance().getReference("Users/"+map.get("customer_id"));
+                                    user.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            Map<String,Object> userMap = (Map<String,Object>)dataSnapshot.getValue();
+                                            edit.putString("name",userMap.get("name").toString());
+                                            edit.putString("phone",userMap.get("phone").toString());
+                                            edit.putString("email",userMap.get("email").toString());
+                                            edit.commit();
+                                        }
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                }
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+                        }else {
                             startActivity(new Intent(MapActivity.this,MapActivity.class));
                             finish();
                         }
-                        DatabaseReference user = FirebaseDatabase.getInstance().getReference("Users/"+map.get("customer_id"));
-                        user.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                Map<String,Object> userMap = (Map<String,Object>)dataSnapshot.getValue();
-                                edit.putString("name",userMap.get("name").toString());
-                                edit.putString("phone",userMap.get("phone").toString());
-                                edit.putString("email",userMap.get("email").toString());
-                                edit.commit();
-                            }
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
                     }
+
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
 
                     }
                 });
+
             }else {
                 Toast.makeText(this, "Stack is Empty", Toast.LENGTH_SHORT).show();
                 finish();
@@ -461,6 +484,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 drop_nav();
             }else if (state.equalsIgnoreCase("end_trip")){
                 end_trip();
+            }else if (state.equalsIgnoreCase("start")){
+                dest_type.setVisibility(View.VISIBLE);
+            }else if (state.equalsIgnoreCase("dest_type")){
+                dest_type();
             }
         }catch (Exception e){
             Log.e("TAG","Error : "+e.getLocalizedMessage());
@@ -470,8 +497,18 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         super.onStart();
     }
 
+    private void dest_type(){
+        if (model.getType().equalsIgnoreCase("pick")){
+            dest_type.setVisibility(View.GONE);
+            locate.setVisibility(View.VISIBLE);
+        }else if (model.getType().equalsIgnoreCase("drop")){
+            dest_type.setVisibility(View.GONE);
+            end_trip.setVisibility(View.VISIBLE);
+        }
+    }
+
     private void nav_pick(){
-        dest_type.setVisibility(View.VISIBLE);
+//        dest_type.setVisibility(View.VISIBLE);
         pickup.setVisibility(View.VISIBLE);
         drop.setVisibility(View.GONE);
 //        locate.setVisibility(View.VISIBLE);
@@ -546,7 +583,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             mMap.clear();
         }
         Log.i("TAG","onMapReady() method start ");
-        LatLng userLocation = new LatLng(location.getLatitude(),location.getLongitude());
+        LatLng userLocation = new LatLng(latitude,longitude);
         if (checkPermission()){
             mMap.setMyLocationEnabled(true);
         }else {
@@ -571,6 +608,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     public void onLocationChanged(Location location) {
         if (location != null){
             this.location = location;
+            getCurrentLocation();
             moveMap();
         }else {
             getCurrentLocation();
@@ -627,12 +665,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
         return FirstPermissionResult == PackageManager.PERMISSION_GRANTED &&
                 SecondPermissionResult == PackageManager.PERMISSION_GRANTED;
-    }
-
-    @Override
-    public void onBackPressed() {
-//        Intent intent = new Intent(this,Welcome.class);
-//        startActivity(intent);
     }
 
     private void displayLocationSettingsRequest(Context context) {
@@ -797,43 +829,72 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         });
     }
 
-    public void cancel_trip(){
-        getCurrentLocation();
-        moveMap();
-        stack.push(model);
-        DatabaseReference resp=FirebaseDatabase.getInstance().getReference("Response/"+ride_info.getString("customer_id",null));
-        resp.child("resp").setValue("Cancel");
-        DatabaseReference cus=FirebaseDatabase.getInstance().getReference("CustomerRequests/"+log_id.getString("id",null)+"/"+ride_info.getString("customer_id",null));
-        cus.removeValue();
-        SharedPreferences.Editor editor=log_id.edit();
-        editor.putString("ride","");
-        editor.commit();
-        int size = stack.size();
-        Log.i("TAG","Stak SIze : "+size);
-        ArrayList<SequenceModel> sequenceModels = new ArrayList<>();
-        for(int i = 0;i < size;i++){
-            Log.i("TAG","Stak pop : "+i);
-            SequenceModel deleteModel =  stack.pop();
-            if (deleteModel.getId() != ride_info.getString("customer_id",null)){
-                sequenceModels.add(deleteModel);
-                Log.i("TAG","item for pushing : "+sequenceModels.size());
-            }
-        }
-        if (sequenceModels.size() > 0){
-            for (int i = sequenceModels.size(); i > 0;i--){
-                Log.i("TAG","Stak push : "+i);
-                stack.push(sequenceModels.get(i));
-            }
-            startActivity(new Intent(MapActivity.this,MapActivity.class));
-            finish();
-        }else {
-            DatabaseReference tripstatus=FirebaseDatabase.getInstance().getReference("Status/"+log_id.getString("id",null));
-            tripstatus.removeValue();
-            DatabaseReference working = FirebaseDatabase.getInstance().getReference("DriversWorking/"+log_id.getString("type",null)+"/"+log_id.getString("id",null));
-            working.removeValue();
-            finish();
-        }
-    }
+//    public void cancel_trip(){
+//        GregorianCalendar gregorianCalendar=new GregorianCalendar();
+//        String date = String.valueOf(gregorianCalendar.get(GregorianCalendar.DAY_OF_MONTH));
+//        String month = String.valueOf(gregorianCalendar.get(GregorianCalendar.MONTH)+1);
+//        String year = String.valueOf(gregorianCalendar.get(GregorianCalendar.YEAR));
+//        final String formateDate = year+"-"+month+"-"+date;
+//
+//        final DatabaseReference driver_acc = FirebaseDatabase.getInstance().getReference("Driver_Account_Info/"+log_id.getString("id",null)+"/"+formateDate);
+//        driver_acc.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for (DataSnapshot data : dataSnapshot.getChildren()){
+//                    Map<String,Object> map = (Map<String,Object>)data.getValue();
+//                    int cancel = Integer.parseInt(map.get("cancel").toString());
+//                    cancel = cancel+1;
+//                    String key = data.getKey();
+//                    try {
+//                        driver_acc.child(key).child("cancel").setValue(Integer.toString(cancel));
+//                    }catch (Exception e){
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//
+//
+////        getCurrentLocation();
+////        moveMap();
+//        stack.push(model);
+//        DatabaseReference resp=FirebaseDatabase.getInstance().getReference("Response/"+ride_info.getString("customer_id",null));
+//        resp.child("resp").setValue("Cancel");
+//        DatabaseReference cus=FirebaseDatabase.getInstance().getReference("CustomerRequests/"+log_id.getString("id",null)+"/"+ride_info.getString("customer_id",null));
+//        cus.removeValue();
+//        SharedPreferences.Editor editor=log_id.edit();
+//        editor.putString("ride","");
+//        editor.commit();
+//        int size = stack.size();
+//        Log.i("TAG","Stak SIze : "+size);
+//        ArrayList<SequenceModel> sequenceModels = new ArrayList<>();
+//        for(int i = 0;i < size;i++){
+//            Log.i("TAG","Stak pop : "+i);
+//            SequenceModel deleteModel =  stack.pop();
+//            if (deleteModel.getId() != ride_info.getString("customer_id",null)){
+//                sequenceModels.add(deleteModel);
+//                Log.i("TAG","item for pushing : "+sequenceModels.size());
+//            }
+//        }
+//        if (sequenceModels.size() > 0){
+//            for (int i = sequenceModels.size(); i > 0;i--){
+//                Log.i("TAG","Stak push : "+i);
+//                stack.push(sequenceModels.get(i));
+//            }
+//            startActivity(new Intent(MapActivity.this,MapActivity.class));
+//            finish();
+//        }else {
+//            DatabaseReference tripstatus=FirebaseDatabase.getInstance().getReference("Status/"+log_id.getString("id",null));
+//            tripstatus.removeValue();
+//            DatabaseReference working = FirebaseDatabase.getInstance().getReference("DriversWorking/"+log_id.getString("type",null)+"/"+log_id.getString("id",null));
+//            working.removeValue();
+//            finish();
+//        }
+//    }
 
     public void getAddress(Double latitude,Double longitude){
         try{
@@ -869,28 +930,28 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             pickup.setVisibility(View.VISIBLE);
             start_trip.setVisibility(View.VISIBLE);
         }else if (id == dest_type.getId()){
+            SharedPreferences.Editor editor = ride_info.edit();
+            editor.putString("state","dest_type");
+            editor.commit();
             if (model.getType().equalsIgnoreCase("pick")){
-                SharedPreferences.Editor editor = ride_info.edit();
-                editor.putString("state","locate");
-                editor.commit();
                 dest_type.setVisibility(View.GONE);
                 locate.setVisibility(View.VISIBLE);
             }else if (model.getType().equalsIgnoreCase("drop")){
-                SharedPreferences.Editor editor = ride_info.edit();
-                editor.putString("state","drop_nav");
-                editor.commit();
+//                SharedPreferences.Editor editor = ride_info.edit();
+//                editor.putString("state","drop_nav");
+//                editor.commit();
                 dest_type.setVisibility(View.GONE);
                 end_trip.setVisibility(View.VISIBLE);
             }
         }else if(id == start_trip_btn.getId()){
-            SharedPreferences.Editor editor = ride_info.edit();
-            editor.putString("state","start_trip");
-            editor.commit();
+//            SharedPreferences.Editor editor = ride_info.edit();
+//            editor.putString("state","start_trip");
+//            editor.commit();
             startActivityForResult(new Intent(this,OTPActivity.class),2);
         }else if(id == pick_nav.getId()){
-            SharedPreferences.Editor editor = ride_info.edit();
-            editor.putString("state","pick_nav");
-            editor.commit();
+//            SharedPreferences.Editor editor = ride_info.edit();
+//            editor.putString("state","pick_nav");
+//            editor.commit();
             getAddress(Double.parseDouble(ride_info.getString("st_lat",null)),Double.parseDouble(ride_info.getString("st_lng",null)));
             Uri nav_uri = Uri.parse("google.navigation:q="+ride_info.getString("st_lat",null)+","+ride_info.getString("st_lng",null));
             Intent intent = new Intent(android.content.Intent.ACTION_VIEW,nav_uri);
@@ -899,9 +960,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             startActivityForResult(intent,1);
             startService(new Intent(this, FloatingViewService.class));
         }else if (id == drop_nav.getId()){
-            SharedPreferences.Editor editor = ride_info.edit();
-            editor.putString("state","drop_nav");
-            editor.commit();
+//            SharedPreferences.Editor editor = ride_info.edit();
+//            editor.putString("state","drop_nav");
+//            editor.commit();
             getAddress(Double.parseDouble(ride_info.getString("en_lat",null)),Double.parseDouble(ride_info.getString("en_lng",null)));
             Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
                     Uri.parse("google.navigation:q="+ride_info.getString("en_lat",null)+","+ride_info.getString("en_lng",null)));
@@ -914,7 +975,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             pickup.setVisibility(View.GONE);
             drop.setVisibility(View.GONE);
             SharedPreferences.Editor editor = ride_info.edit();
-            editor.putString("state","end_trip");
+            editor.putString("state","start");
             editor.commit();
             DatabaseReference rides = FirebaseDatabase.getInstance().getReference("Rides");
             DatabaseReference LastRide = FirebaseDatabase.getInstance().getReference("LastRide");
@@ -950,10 +1011,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             this.finish();
         }else if (id == cancel_btn.getId()){
             SharedPreferences.Editor editor = ride_info.edit();
-            editor.putString("state","state");
+            editor.putString("state","start");
             editor.commit();
-            cancel_trip();
+//            cancel_trip();
 //            startActivity(new Intent(this,Welcome.class));
+            startActivity(new Intent(MapActivity.this,RiderListActivity.class));
             finish();
         }
     }
@@ -973,6 +1035,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             }
         }else if (requestCode == 2){
             if (resultCode == Activity.RESULT_OK){
+                SharedPreferences.Editor editor = ride_info.edit();
+                editor.putString("state","start");
+                editor.commit();
+
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Response/"+ride_info.getString("customer_id",null)+"/resp");
                 ref.setValue("Trip Started");
                 cancel.setVisibility(View.GONE);
@@ -1023,34 +1089,4 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         //cancel_trip();
     }
 
-
-//    Thread thread = new Thread() {
-//        @Override
-//        public void run() {
-//            try {
-//                while(true) {
-//                    sleep(1000);
-//                    handler.post(this);
-//                }
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    };
-//
-//thread.start();
-//
-//    @Override
-//    public void run() {
-//        while(true){
-//            getCurrentLocation();
-//            Location l = location;
-//            onLocationChanged(l);
-//            try{
-//                Thread.sleep(3000);
-//            }catch(Exception e){
-//
-//            }
-//        }
-//    }
 }

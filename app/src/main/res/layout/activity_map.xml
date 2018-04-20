@@ -46,11 +46,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="100dp">
+        android:layout_marginBottom="110dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
         <Button
             android:id="@+id/cancel_btn"
-            android:text="Cancel Trip"
-            android:background="@color/front_color"
+            android:text="Rider List"
+            android:background="#bBbbbc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </RelativeLayout>

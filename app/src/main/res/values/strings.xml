@@ -83,8 +83,8 @@
 
     <string-array name="select_option">
         <item>Booking History</item>
-        <item>Earnings</item>
-        <item>Cancel</item>
+        <item>Earnings History</item>
+        <item>Cancel History</item>
     </string-array>
     <string name="select_prompt">Select an option</string>
 </resources>

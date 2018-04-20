@@ -98,11 +98,11 @@ public class TripHandlerActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot data : dataSnapshot.getChildren()){
                     Map<String,Object> map = (Map<String,Object>)data.getValue();
-                    int cancel = Integer.parseInt(map.get("cancel").toString());
+                    int cancel = Integer.parseInt(map.get("reject").toString());
                     cancel = cancel+1;
                     String key = data.getKey();
                     try {
-                        driver_acc.child(key).child("cancel").setValue(Integer.toString(cancel));
+                        driver_acc.child(key).child("reject").setValue(Integer.toString(cancel));
                     }catch (Exception e){
                         e.printStackTrace();
                     }

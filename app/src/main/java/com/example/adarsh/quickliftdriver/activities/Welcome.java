@@ -242,7 +242,10 @@ public class Welcome extends AppCompatActivity implements Runnable
         stopService(requestService);
         login_status.setText("Logout");
         logout_time = new Date();
+        login_time = new Date(welcome.getString("login_time",null));
+
         long diff = logout_time.getTime() - login_time.getTime();
+
         long diffSeconds = diff / 1000 % 60;
         long diffMinutes = diff / (60 * 1000) % 60;
         long diffHours = diff / (60 * 60 * 1000);
@@ -347,10 +350,10 @@ public class Welcome extends AppCompatActivity implements Runnable
         @Override
         protected void onDestroy() {
             super.onDestroy();
-            editor = pref.edit();
-            editor.putBoolean("status",false);
-            editor.commit();
-            logOut();
+//            editor = pref.edit();
+//            editor.putBoolean("status",false);
+//            editor.commit();
+            //logOut();
         }
 
         @Override
