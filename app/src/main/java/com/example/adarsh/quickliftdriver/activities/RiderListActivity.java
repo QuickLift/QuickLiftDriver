@@ -223,7 +223,7 @@ public class RiderListActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 //        super.onBackPressed();
-        startActivity(new Intent(RiderListActivity.this,MapActivity.class));
+//        startActivity(new Intent(RiderListActivity.this,MapActivity.class));
         finish();
     }
 }

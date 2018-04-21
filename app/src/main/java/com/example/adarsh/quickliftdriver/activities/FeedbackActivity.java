@@ -5,8 +5,10 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.adarsh.quickliftdriver.R;
@@ -19,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
@@ -26,6 +29,9 @@ public class FeedbackActivity extends AppCompatActivity {
     private static Button feed;
     SharedPreferences log_id,ride_info;
     TextView fare;
+    private RatingBar rate_bar;
+    private DatabaseReference feed_rate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +41,9 @@ public class FeedbackActivity extends AppCompatActivity {
         log_id=getApplicationContext().getSharedPreferences("Login",MODE_PRIVATE);
         ride_info = getApplicationContext().getSharedPreferences("ride_info",MODE_PRIVATE);
 
+        rate_bar = (RatingBar)findViewById(R.id.feed_rate);
+        feed_rate = FirebaseDatabase.getInstance().getReference("DriverFeedback/"+ride_info.getString("customer_id",null));
+
         fare = (TextView)findViewById(R.id.fare);
         fare.setText(ride_info.getString("price",null));
 
@@ -43,6 +52,34 @@ public class FeedbackActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                feed_rate.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()){
+                            Map<String,Object> feedback= (Map<String,Object>)dataSnapshot.getValue();
+                            int no = Integer.parseInt(feedback.get("no").toString());
+                            Float rate = Float.parseFloat(feedback.get("rate").toString());
+                            rate = rate * no;
+                            Float curr_rate = ((rate+rate_bar.getRating())/(no+1));
+
+                            HashMap<String,String> current_feed = new HashMap<>();
+                            current_feed.put("no",Integer.toString(no+1));
+                            current_feed.put("rate",curr_rate.toString());
+
+                            feed_rate.setValue(current_feed);
+                        }else {
+                            HashMap<String,String> current_feed = new HashMap<>();
+                            current_feed.put("no",Integer.toString(1));
+                            current_feed.put("rate",Float.toString(rate_bar.getRating()));
+                            feed_rate.setValue(current_feed);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.i("OK","failed to create reference");
+                    }
+                });
                 GregorianCalendar gregorianCalendar=new GregorianCalendar();
                 String date = String.valueOf(gregorianCalendar.get(GregorianCalendar.DAY_OF_MONTH));
                 String month = String.valueOf(gregorianCalendar.get(GregorianCalendar.MONTH)+1);

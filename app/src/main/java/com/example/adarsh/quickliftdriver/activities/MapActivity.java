@@ -171,8 +171,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         db= FirebaseDatabase.getInstance().getReference("CustomerRequests/"+log_id.getString("id",null));
         stopService(floatingViewIntent);
 
-        status_db = FirebaseDatabase.getInstance().getReference("Status/"+log_id.getString("id",null)+"/I");
-
         handler = new Handler();
         final Runnable r = new Runnable() {
             public void run() {
@@ -181,7 +179,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 onLocationChanged(l);
 //                status_db.child("0").setValue(latitude);
 //                status_db.child("1").setValue(longitude);
-                handler.postDelayed(this, 30000);
+                handler.postDelayed(this, 10000);
             }
         };
 
@@ -258,7 +256,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             GeoFire geoFire=new GeoFire(ref);
             geoFire.setLocation(userId,new GeoLocation(latitude,longitude));
 
-            DatabaseReference statref=FirebaseDatabase.getInstance().getReference("Status/"+userId);
+            DatabaseReference statref=FirebaseDatabase.getInstance().getReference("Status/");
 
             GeoFire statGeoFire=new GeoFire(statref);
             statGeoFire.setLocation(userId,new GeoLocation(latitude,longitude));
@@ -878,8 +876,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 //                    startActivity(new Intent(MapActivity.this,Welcome.class));
                     finish();
                 }else{
-                    GeoFire gFire = new GeoFire(tripstatus);
-                    gFire.setLocation(userId, new GeoLocation(latitude, longitude));
+//                    GeoFire gFire = new GeoFire(tripstatus);
+//                    gFire.setLocation(userId, new GeoLocation(latitude, longitude));
                 }
             }
 
@@ -1077,7 +1075,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 //            cancel_trip();
 //            startActivity(new Intent(this,Welcome.class));
             startActivity(new Intent(MapActivity.this,RiderListActivity.class));
-            finish();
+           // finish();
         }
     }
 
