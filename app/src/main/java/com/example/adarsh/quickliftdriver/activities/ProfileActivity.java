@@ -3,9 +3,12 @@ package com.example.adarsh.quickliftdriver.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -26,6 +29,8 @@ import java.net.PortUnreachableException;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ProfileActivity extends AppCompatActivity {
 
     private static Button cancel,confirm;
@@ -34,6 +39,8 @@ public class ProfileActivity extends AppCompatActivity {
     private static RatingBar rate;
     private static SharedPreferences login;
     private static DatabaseReference db;
+    private CircleImageView image;
+    private Bitmap photo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +61,8 @@ public class ProfileActivity extends AppCompatActivity {
         rate = (RatingBar)findViewById(R.id.rateBar);
         rate.setRating(3);
         rate.setIsIndicator(true);
+
+        image = (CircleImageView)findViewById(R.id.image);
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +122,11 @@ public class ProfileActivity extends AppCompatActivity {
                     mobile.setText(map.get("phone").toString());
                     email.setText(map.get("email").toString());
                     address.setText(map.get("address").toString());
+                    rate.setRating(Float.parseFloat(map.get("rate").toString()));
+
+                    byte[] decodedString = Base64.decode(map.get("thumb").toString(), Base64.DEFAULT);
+                    photo = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    image.setImageBitmap(photo);
                 }
             }
 

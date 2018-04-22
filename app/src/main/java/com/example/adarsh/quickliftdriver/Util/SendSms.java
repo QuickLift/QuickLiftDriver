@@ -2,6 +2,8 @@ package com.example.adarsh.quickliftdriver.Util;
 
 import android.util.Log;
 
+import com.example.adarsh.quickliftdriver.activities.Login;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -15,14 +17,16 @@ public class SendSms extends Thread{
 
     String apiKey = "apikey=" + "bqvQUgZIuxg-FeJqx9u1RMutVzVDtLw9haP2VNQ5DH";
     String message = "&message=";
-    String sender = "&sender=" + "TXTLCL";
+    String sender = "&sender=" + "TXTLCL";          //TXTLCL
     String numbers = "&numbers=";
+    Login login;
 
-    public SendSms(String msg, String num) {
+    public SendSms(String msg, String num,Login login) {
 //        this.message = message;
 //        this.numbers = numbers;
         message = message + msg;
         numbers = numbers + num;
+        this.login = login;
     }
 
 
@@ -42,6 +46,7 @@ public class SendSms extends Thread{
                 stringBuffer.append(line);
             }
             rd.close();
+
 
             return stringBuffer.toString();
         } catch (Exception e) {

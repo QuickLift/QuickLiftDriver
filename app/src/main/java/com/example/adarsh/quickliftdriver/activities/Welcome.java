@@ -6,6 +6,8 @@ import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -14,6 +16,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -57,6 +60,8 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.CALL_PHONE;
@@ -79,7 +84,9 @@ public class Welcome extends AppCompatActivity implements Runnable
     private static Date login_time,logout_time;
     protected static final int REQUEST_CHECK_SETTINGS = 0x1;
     boolean doubleBackToExitPressedOnce = false;
+    CircleImageView image;
     String type = null;
+    Bitmap photo;
 
         @Override
         public void onBackPressed() {
@@ -138,6 +145,7 @@ public class Welcome extends AppCompatActivity implements Runnable
         book = (TextView)findViewById(R.id.book_no);
         earn = (TextView)findViewById(R.id.earn_no);
         cancel = (TextView)findViewById(R.id.cancel_no);
+        image = (CircleImageView)findViewById(R.id.image);
 
         // variables storing function values returned by network connection functions
         boolean status1 = haveNetworkConnection();
@@ -377,6 +385,10 @@ public class Welcome extends AppCompatActivity implements Runnable
                         Log.i("TAG","name : "+map.get("name").toString());
                         name.setText(map.get("name").toString());
                         contact.setText(map.get("phone").toString());
+                        rate.setRating(Float.parseFloat(map.get("rate").toString()));
+                        byte[] decodedString = Base64.decode(map.get("thumb").toString(), Base64.DEFAULT);
+                        photo = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        image.setImageBitmap(photo);
                     }
                 }
                 @Override
