@@ -201,8 +201,8 @@ public class TripHandlerActivity extends AppCompatActivity {
             delref.removeValue();
             DatabaseReference ref=FirebaseDatabase.getInstance().getReference("DriversWorking/"+log_id.getString("type",null)+"/"+userId);
             Log.i("TAG","latitude : "+latitude+"\nLongitude : "+longitude);
-            GeoFire geoFire=new GeoFire(ref);
-            geoFire.setLocation(userId,new GeoLocation(latitude,longitude));
+//            GeoFire geoFire=new GeoFire(ref);
+//            geoFire.setLocation(userId,new GeoLocation(latitude,longitude));
             Log.i("TAG","latitude : "+latitude+"\nLongitude : "+longitude);
             DatabaseReference tripstatus=FirebaseDatabase.getInstance().getReference("Status");
             GeoFire loc=new GeoFire(tripstatus);

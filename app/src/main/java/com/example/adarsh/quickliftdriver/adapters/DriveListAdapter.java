@@ -60,7 +60,7 @@ public class DriveListAdapter extends BaseAdapter {
                 }else if ((mRidesName.equalsIgnoreCase("CanceledRidesCount"))){
                     DriveCount.setText(Integer.toString(feedList.get(position).getFeed().getCanceledRidesCount()));
                 }else if ((mRidesName.equalsIgnoreCase("TotalEarning"))){
-                    DriveCount.setText(Integer.toString(feedList.get(position).getFeed().getTotalEarning()));
+                    DriveCount.setText(Float.toString(feedList.get(position).getFeed().getTotalEarning()));
                 }
 
         return row;

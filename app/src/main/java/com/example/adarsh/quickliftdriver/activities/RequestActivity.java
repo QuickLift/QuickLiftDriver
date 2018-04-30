@@ -16,14 +16,21 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class RequestActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private static Button confirm,cancel;
-    private static SharedPreferences preferences;
+    private static SharedPreferences preferences,log_id;
     private static SharedPreferences.Editor editor;
     private static TextView user_name,user_add;
+    DatabaseReference customerReq;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +43,8 @@ public class RequestActivity extends FragmentActivity implements OnMapReadyCallb
         mapFragment.getMapAsync(this);
 
         preferences = getSharedPreferences("ride_info",MODE_PRIVATE);
+        log_id = getSharedPreferences("Login",MODE_PRIVATE);
+        customerReq= FirebaseDatabase.getInstance().getReference("CustomerRequests/"+log_id.getString("id",null));
 
         confirm = (Button)findViewById(R.id.confirm_btn);
         cancel = (Button)findViewById(R.id.cancel_btn);
@@ -62,6 +71,35 @@ public class RequestActivity extends FragmentActivity implements OnMapReadyCallb
                 finish();
             }
         });
+
+        customerReq.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getKey().equalsIgnoreCase(preferences.getString("customer_id",null))){
+                    finish();
+                }
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -81,4 +119,5 @@ public class RequestActivity extends FragmentActivity implements OnMapReadyCallb
         user_name.setText(preferences.getString("name",null));
         user_add.setText(preferences.getString("source",null));
     }
+
 }

@@ -20,7 +20,7 @@
         android:layout_height="120dp"
         android:backgroundTint="@color/front_color"
         android:hint="Office Address"
-        android:text="IF 254,I Block\nIttina Neela Apartment\nBengaluru\nKarnataka"
+        android:text="Lemons Shanti Plaza\nGola Road\nPatna\n801503"
         android:gravity="start"
         android:editable="false"
         android:layout_below="@+id/office_image"/>

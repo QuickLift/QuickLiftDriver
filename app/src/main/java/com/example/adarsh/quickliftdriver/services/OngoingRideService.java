@@ -56,7 +56,9 @@ public class OngoingRideService extends Service {
         customerReq.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 if (dataSnapshot.getChildrenCount() > 0){
+                    Log.i("OK","Login ID in OnGoing Rides : "+log_id.getString("id",null));
                     Log.i("TAG","data present");
                     for (final DataSnapshot data : dataSnapshot.getChildren()){
                         final Map<String,Object> map = (Map<String,Object>)data.getValue();

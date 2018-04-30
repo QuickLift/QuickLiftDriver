@@ -1,5 +1,6 @@
 package com.example.adarsh.quickliftdriver.services;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -8,10 +9,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.example.adarsh.quickliftdriver.R;
@@ -33,8 +36,11 @@ import java.util.Calendar;
 public class NotificationService extends Service {
     private static SharedPreferences preferences,loc_pref,ride_info,Login;
     private static SharedPreferences.Editor editor,pref_edit;
-    private static NotificationManager notificationManager;
     private static DatabaseReference customerReq;
+
+    NotificationManager notificationManager;
+    NotificationChannel notificationChannel;
+    String NOTIFICATION_CHANNEL_ID="17";
 
     public NotificationService() {
         customerReq= FirebaseDatabase.getInstance().getReference("CustomerRequests");
@@ -63,7 +69,7 @@ public class NotificationService extends Service {
         if (ride_info.getString("accept",null).equalsIgnoreCase("0")){
             notificationHandler();
         }else {
-            notificationManager.cancel(0);
+//            notificationManager.cancel(0);
             stopSelf();
         }
         return START_NOT_STICKY;
@@ -73,7 +79,7 @@ public class NotificationService extends Service {
         Uri alarmSound = Uri.parse("android.resource://" + getApplicationContext().getPackageName() + "/" + R.raw.notification_tone);
         android.support.v4.app.NotificationCompat.BigPictureStyle bigPictureStyle = new android.support.v4.app.NotificationCompat.BigPictureStyle();
         bigPictureStyle.bigPicture(BitmapFactory.decodeResource(getResources(), R.drawable.profile)).build();
-        notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager = (NotificationManager)getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
         Intent cancelIntent = new Intent(NotificationService.this, TripHandlerActivity.class);
         cancelIntent.putExtra("value","cancel");
@@ -84,32 +90,45 @@ public class NotificationService extends Service {
         PendingIntent confirmPendingIntent = PendingIntent.getActivity(this,25,confirmIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
         Intent mapIntent = new Intent(this, RequestActivity.class);
-//        mapIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent piIntent = PendingIntent.getActivity(this,(int)Calendar.getInstance().getTimeInMillis(),mapIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent piIntent = PendingIntent.getActivity(this,40,mapIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
-        String ChannelId = "channel-oreo";
-        String ChannelName = "channel_name";
-        int importance = NotificationManager.IMPORTANCE_HIGH;
+        try{
+            notificationManager = (NotificationManager) getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
 
-        android.support.v4.app.NotificationCompat.Builder builder = (android.support.v4.app.NotificationCompat.Builder)new android.support.v4.app.NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Incoming Trip Request")
-                .setContentText(ride_info.getString("name",null)+"\t"+ride_info.getString("phone",null))
-                .setContentIntent(piIntent)
-                .setStyle(bigPictureStyle)
-                .setAutoCancel(true)
-                .setTimeoutAfter(18000)
-                .setSound(alarmSound)
-                .setPriority(NotificationManager.IMPORTANCE_MAX)
-                .setPriority(NotificationManager.IMPORTANCE_HIGH)
-                .addAction(R.mipmap.ic_launcher,"Cancel",cancelPendingIntent)
-                .addAction(R.mipmap.ic_launcher,"Confirm",confirmPendingIntent);
+            Notification mBuilder = new NotificationCompat.Builder(getApplicationContext(),NOTIFICATION_CHANNEL_ID)
+                    .setCategory(Notification.CATEGORY_PROMO)
+                    .setContentTitle("Incoming Trip Request")
+                    .setContentText(ride_info.getString("name",null)+"\t"+ride_info.getString("phone",null))
+                    .setSmallIcon(R.drawable.logo)
+                    .setAutoCancel(true)
+                    .setSound(alarmSound)
+                    .setTimeoutAfter(18000)
+                    .setVisibility(Notification.VISIBILITY_PUBLIC)
+                    .addAction(R.mipmap.ic_launcher,"Cancel",cancelPendingIntent)
+                    .addAction(R.mipmap.ic_launcher,"Confirm",confirmPendingIntent)
+                    .setContentIntent(piIntent)
+                    .setPriority(Notification.PRIORITY_HIGH)
+                    .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000}).build();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationChannel mChannel = new NotificationChannel(ChannelId,ChannelName,importance);
-            notificationManager.createNotificationChannel(mChannel);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            {
+
+                notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "My Notifications", NotificationManager.IMPORTANCE_HIGH);
+
+                notificationChannel.setDescription("Channel description");
+                notificationChannel.enableLights(true);
+                notificationChannel.setLightColor(Color.RED);
+                notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
+                notificationChannel.enableVibration(true);
+                notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+                notificationManager.createNotificationChannel(notificationChannel);
+            }
+
+            notificationManager.notify(0,mBuilder);
+
+        }catch (Exception e){
+            Log.e("OK","Error notification : "+e);
         }
-        notificationManager.notify(0,builder.build());
 
         SharedPreferences.Editor prefEdit = preferences.edit();
         prefEdit.putBoolean("status",false);
@@ -129,9 +148,6 @@ public class NotificationService extends Service {
                         SharedPreferences.Editor prefEdit = preferences.edit();
                         prefEdit.putBoolean("status",true);
                         prefEdit.commit();
-//                        Intent intent1 = new Intent(getApplicationContext(), Welcome.class);
-//                        intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        startActivity(intent1);
                     }
                 }
 
@@ -152,7 +168,6 @@ public class NotificationService extends Service {
         }
         GPSTracker gps = new GPSTracker(this);
 
-        // check if GPS enabled
         if (gps.canGetLocation()) {
 
             double latitude = gps.getLatitude();
@@ -161,16 +176,9 @@ public class NotificationService extends Service {
             if (Login.getString("ride",null).equals("")) {
                 String userId = Login.getString("id",null);
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("DriversAvailable/"+Login.getString("type",null));
-//            ref.push().setValue("hello");
+
                 GeoFire geoFire = new GeoFire(ref);
                 geoFire.setLocation(userId, new GeoLocation(latitude, longitude));
-            }
-            else {
-                String userId= Login.getString("id",null);
-                DatabaseReference ref=FirebaseDatabase.getInstance().getReference("DriversWorking/"+Login.getString("type",null)+"/"+userId);
-
-                GeoFire geoFire=new GeoFire(ref);
-                geoFire.setLocation(userId,new GeoLocation(latitude,longitude));
             }
         }
 

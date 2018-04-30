@@ -87,22 +87,6 @@ public class ShareRideCheckingService extends Service {
                     if (gpsTracker.getLocation().distanceTo(location)<5000){
                         ArrayList<SequenceModel> seq = new ArrayList<>();
                         seq.clear();
-//                        SequenceModel model = new SequenceModel();
-//                        model.setName("Adarsh");
-//                        model.setType("pick");
-//                        model.setLat(Double.parseDouble("12.8324627"));
-//                        model.setLng(Double.parseDouble("77.7013531"));
-//                        model.setLatLng(new LatLng(Double.parseDouble("12.8324627"),Double.parseDouble("77.7013531")));
-//
-//                        SequenceModel dropModel = new SequenceModel();
-//                        dropModel.setName("Adarsh");
-//                        dropModel.setType("drop");
-//                        dropModel.setLat(Double.parseDouble("12.835483999999997"));
-//                        dropModel.setLng(Double.parseDouble("77.679803"));
-//                        dropModel.setLatLng(new LatLng(Double.parseDouble("12.835483999999997"),Double.parseDouble("77.679803")));
-//
-//                        seq.add(model);
-//                        seq.add(dropModel);
                         for (int i = 0; i < stack.size(); i++) {
                             seq.add(stack.pop());
                         }

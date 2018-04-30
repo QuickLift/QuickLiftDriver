@@ -222,7 +222,7 @@
                         android:layout_height="80dp"
                         android:layout_gravity="center_horizontal"
                         android:background="@drawable/round_button"
-                        android:src="@drawable/ic_action_ride" />
+                        android:src="@drawable/rides" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -247,7 +247,7 @@
                         android:layout_height="80dp"
                         android:layout_gravity="center_horizontal"
                         android:background="@drawable/round_button"
-                        android:src="@drawable/ic_account_info" />
+                        android:src="@drawable/accountinfo" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -272,7 +272,7 @@
                         android:layout_height="80dp"
                         android:layout_gravity="center_horizontal"
                         android:background="@drawable/round_button"
-                        android:src="@drawable/ic_action_help" />
+                        android:src="@drawable/helpicon" />
                 </LinearLayout>
             </LinearLayout>
         </HorizontalScrollView>

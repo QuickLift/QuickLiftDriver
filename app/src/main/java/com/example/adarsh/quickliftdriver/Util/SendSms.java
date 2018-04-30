@@ -21,12 +21,9 @@ public class SendSms extends Thread{
     String numbers = "&numbers=";
     Login login;
 
-    public SendSms(String msg, String num,Login login) {
-//        this.message = message;
-//        this.numbers = numbers;
+    public SendSms(String msg, String num) {
         message = message + msg;
         numbers = numbers + num;
-        this.login = login;
     }
 
 
@@ -46,7 +43,6 @@ public class SendSms extends Thread{
                 stringBuffer.append(line);
             }
             rd.close();
-
 
             return stringBuffer.toString();
         } catch (Exception e) {

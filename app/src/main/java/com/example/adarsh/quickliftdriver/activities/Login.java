@@ -1,12 +1,15 @@
 package com.example.adarsh.quickliftdriver.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PersistableBundle;
@@ -28,6 +31,15 @@ import android.widget.Toast;
 
 import com.example.adarsh.quickliftdriver.R;
 import com.example.adarsh.quickliftdriver.Util.SendSms;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -70,6 +82,10 @@ public class Login extends AppCompatActivity {
     String message = "&message=";
     String sender = "&sender=" + "TXTLCL";          //TXTLCL
     String numbers = "&numbers=";
+    String msg;
+
+    LocationManager manager;
+    protected static final int REQUEST_CHECK_SETTINGS = 0x1;
 
 //    @Override
 //    public void onStart() {
@@ -151,6 +167,14 @@ public class Login extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_login);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+
+            displayLocationSettingsRequest(getApplicationContext());
+        }
+
+        getSupportActionBar().setTitle("Driver Login");
 
         auth = FirebaseAuth.getInstance();
         FirebaseAuthentication();
@@ -273,6 +297,7 @@ public class Login extends AppCompatActivity {
     }
 
     public void send_otp(View view) {
+        err.setText("");
         //Toast.makeText(this, "Send otp clicked", Toast.LENGTH_SHORT).show();
         if (TextUtils.isEmpty(reference.getText().toString())){
 //            err.setTextColor(Color.RED);
@@ -293,67 +318,44 @@ public class Login extends AppCompatActivity {
                             }else {
                                 showProgressDialog();
                                 otp_number = String.valueOf((int)(Math.random()*9999)+1000);
-                                String otp_msg = "Enter "+otp_number+" as an otp to verify yourself.This otp is valid for only 2 mins from the time when otp was sent";
-//                                Toast.makeText(Login.this, ""+otp_msg, Toast.LENGTH_SHORT).show();
+                                String otp_msg = "Enter "+otp_number+" as an otp to verify yourself. This otp is valid for only 2 mins from the time when otp was sent";
+                                Toast.makeText(Login.this, ""+otp_msg, Toast.LENGTH_SHORT).show();
 //
-//                                new SendSms(otp_msg,phone).start();
                                 message = message + otp_msg;
                                 numbers = numbers + phone;
-                                Login.this.runOnUiThread(new Runnable() {
-                                    @Override
+
+                                new SendSms(otp_msg,phone).start();
+//
+                                hideProgressDialog();
+
+                                reference.setEnabled(false);
+                                send_otp.setEnabled(false);
+                                send_otp.setVisibility(View.GONE);
+                                otp.setVisibility(View.VISIBLE);
+                                submit.setVisibility(View.VISIBLE);
+                                handler = new Handler();
+                                final Runnable r = new Runnable() {
                                     public void run() {
-                                        try {
-                                            // Send data
-                                            HttpURLConnection conn = (HttpURLConnection) new URL("https://api.textlocal.in/send/?").openConnection();
-                                            String data = apiKey + numbers + message + sender;
-                                            conn.setDoOutput(true);
-                                            conn.setRequestMethod("POST");
-                                            conn.setRequestProperty("Content-Length", Integer.toString(data.length()));
-                                            conn.getOutputStream().write(data.getBytes("UTF-8"));
-                                            final BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                                            final StringBuffer stringBuffer = new StringBuffer();
-                                            String line;
-                                            while ((line = rd.readLine()) != null) {
-                                                stringBuffer.append(line);
-                                            }
-                                            rd.close();
-                                            err.setTextColor(Color.GREEN);
-                                            err.setText("OTP Sent successfully");
+                                        reference.setEnabled(true);
+                                        send_otp.setEnabled(true);
+                                        send_otp.setVisibility(View.VISIBLE);
+                                        otp.setVisibility(View.GONE);
+                                        submit.setVisibility(View.GONE);
+                                        otp.setText("");
 
-                                            hideProgressDialog();
-                                            reference.setEnabled(false);
-                                            send_otp.setEnabled(false);
-                                            otp.setVisibility(View.VISIBLE);
-                                            submit.setVisibility(View.VISIBLE);
-                                            handler = new Handler();
-                                            final Runnable r = new Runnable() {
-                                                public void run() {
-                                                    reference.setEnabled(true);
-                                                    send_otp.setEnabled(true);
-                                                    otp.setVisibility(View.GONE);
-                                                    submit.setVisibility(View.GONE);
-                                                    err.setTextColor(Color.RED);
-                                                    err.setText("Timeout for entering OTP");
-                                                }
-                                            };
-
-                                            handler.postDelayed(r, 20000);
-
-                                        } catch (Exception e) {
-                                            hideProgressDialog();
-                                            System.out.println("Error SMS "+e);
-                                            err.setTextColor(Color.RED);
-                                            err.setText("Unable to send OTP.\nPlease try again");
-
-                                        }
+                                        err.setTextColor(Color.RED);
+                                        err.setText("Time Expired\nPlease try again");
                                     }
-                                });
+                                };
+
+                                handler.postDelayed(r, 20000);
                             }
                         }else {
                             err.setTextColor(Color.RED);
-                            err.setText("Driver not exist with the given reference id");
+                            err.setText("Invalid reference number \nPlease contact QuickLift customer care");
                         }
                     }catch (Exception e){
+                        Log.e("OK","Error : "+e.getLocalizedMessage());
                         err.setTextColor(Color.RED);
                         err.setText("Server Error.\nPlease try again");
                     }
@@ -371,15 +373,16 @@ public class Login extends AppCompatActivity {
     }
 
     public void submit(View view) {
+        err.setText("");
         if (TextUtils.isEmpty(otp.getText().toString().trim())){
             err.setTextColor(Color.RED);
-            err.setText("You shold enter your OTP");
+            err.setText("Please enter OTP");
         }else {
             if (otp.getText().toString().trim().equalsIgnoreCase(otp_number)){
                 updateUI(reference.getText().toString().trim());
             }else {
                 err.setTextColor(Color.RED);
-                err.setText("Please enter valid OTP");
+                err.setText("Invalid OTP\nTry again");
             }
         }
     }
@@ -442,5 +445,46 @@ public class Login extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    private void displayLocationSettingsRequest(Context context) {
+        GoogleApiClient googleApiClient = new GoogleApiClient.Builder(context)
+                .addApi(LocationServices.API).build();
+        googleApiClient.connect();
+
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(10000 / 2);
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
+        builder.setAlwaysShow(true);
+
+        PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
+        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
+            @Override
+            public void onResult(LocationSettingsResult result) {
+                final Status status = result.getStatus();
+                switch (status.getStatusCode()) {
+                    case LocationSettingsStatusCodes.SUCCESS:
+                        Log.i("TAG", "All location settings are satisfied.");
+                        break;
+                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                        Log.i("TAG", "Location settings are not satisfied. Show the user a dialog to upgrade location settings ");
+
+                        try {
+                            // Show the dialog by calling startResolutionForResult(), and check the result
+                            // in onActivityResult().
+                            status.startResolutionForResult(Login.this, REQUEST_CHECK_SETTINGS);
+                        } catch (IntentSender.SendIntentException e) {
+                            Log.i("TAG", "PendingIntent unable to execute request.");
+                        }
+                        break;
+                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                        Log.i("TAG", "Location settings are inadequate, and cannot be fixed here. Dialog not created.");
+                        break;
+                }
+            }
+        });
     }
 }

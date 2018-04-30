@@ -1,11 +1,14 @@
 package com.example.adarsh.quickliftdriver.activities;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -37,6 +40,8 @@ public class RidesActivity extends AppCompatActivity {
     private SharedPreferences log_id;
     ArrayList<Map<String,Object>> ride_list=new ArrayList<Map<String,Object>>();
     Button curr_ride;
+    private ProgressDialog progressDialog;
+    ImageView no_ride;
 
     @Override
     public void onBackPressed() {
@@ -70,6 +75,11 @@ public class RidesActivity extends AppCompatActivity {
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        progressDialog = new ProgressDialog(this, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Please Wait...\nLoading Rides");
+
         curr_ride = (Button)findViewById(R.id.curr_ride);
         curr_ride.setVisibility(View.GONE);
         curr_ride.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +89,8 @@ public class RidesActivity extends AppCompatActivity {
                 finish();
             }
         });
+        no_ride = (ImageView)findViewById(R.id.no_ride);
+        no_ride.setVisibility(View.GONE);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         log_id = getApplicationContext().getSharedPreferences("Login", MODE_PRIVATE);
@@ -86,14 +98,26 @@ public class RidesActivity extends AppCompatActivity {
 
         list=(ListView)findViewById(R.id.list);
 
+        if (!progressDialog.isShowing()){
+            progressDialog.show();
+        }
+
         db.orderByChild("driver").equalTo(log_id.getString("id",null)).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getChildrenCount() <= 0){
+                    no_ride.setVisibility(View.VISIBLE);
+                }
                 ride_list.clear();
+
                 for (DataSnapshot data:dataSnapshot.getChildren()){
                     ride_list.add((Map<String, Object>) data.getValue());
                     //Toast.makeText(CustomerRides.this, String.valueOf(ride_list.size()), Toast.LENGTH_SHORT).show();
                     //Toast.makeText(CustomerRides.this, ride_list.get(ride_list.size()-1).get("time").toString(), Toast.LENGTH_SHORT).show();
+                }
+                if (progressDialog.isShowing()){
+                    progressDialog.cancel();
+                    progressDialog.dismiss();
                 }
                 //Toast.makeText(CustomerRides.this, String.valueOf(ride_list.size()), Toast.LENGTH_SHORT).show();
                 list.setAdapter(new CustomAdapter());
@@ -133,12 +157,17 @@ public class RidesActivity extends AppCompatActivity {
             TextView destination=(TextView)view.findViewById(R.id.destination);
             TextView amount=(TextView)view.findViewById(R.id.amount);
             final TextView name=(TextView)view.findViewById(R.id.name);
+            TextView status = (TextView)view.findViewById(R.id.sta);
 
             time.setText(ride_list.get(position).get("time").toString());
             source.setText(ride_list.get(position).get("source").toString());
             destination.setText(ride_list.get(position).get("destination").toString());
             amount.setText("Rs. "+ride_list.get(position).get("amount").toString());
-
+            try{
+                status.setText(ride_list.get(position).get("status").toString());
+            }catch (Exception e){
+                status.setText("Unknown");
+            }
             DatabaseReference dref=FirebaseDatabase.getInstance().getReference("Users");
             dref.child(ride_list.get(position).get("customerid").toString()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override

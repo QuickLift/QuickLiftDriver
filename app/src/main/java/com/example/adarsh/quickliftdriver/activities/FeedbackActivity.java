@@ -31,6 +31,8 @@ public class FeedbackActivity extends AppCompatActivity {
     TextView fare;
     private RatingBar rate_bar;
     private DatabaseReference feed_rate;
+    boolean submit = false;
+    String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +42,10 @@ public class FeedbackActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         log_id=getApplicationContext().getSharedPreferences("Login",MODE_PRIVATE);
         ride_info = getApplicationContext().getSharedPreferences("ride_info",MODE_PRIVATE);
+        id = ride_info.getString("customer_id",null);
 
         rate_bar = (RatingBar)findViewById(R.id.feed_rate);
-        feed_rate = FirebaseDatabase.getInstance().getReference("DriverFeedback/"+ride_info.getString("customer_id",null));
+        feed_rate = FirebaseDatabase.getInstance().getReference("DriverFeedback/"+id);
 
         fare = (TextView)findViewById(R.id.fare);
         fare.setText(ride_info.getString("price",null));
@@ -60,13 +63,15 @@ public class FeedbackActivity extends AppCompatActivity {
                             int no = Integer.parseInt(feedback.get("no").toString());
                             Float rate = Float.parseFloat(feedback.get("rate").toString());
                             rate = rate * no;
-                            Float curr_rate = ((rate+rate_bar.getRating())/(no+1));
+                            Float curr_rate = (Float) ((rate+rate_bar.getRating())/(no+1));
 
                             HashMap<String,String> current_feed = new HashMap<>();
                             current_feed.put("no",Integer.toString(no+1));
                             current_feed.put("rate",curr_rate.toString());
 
                             feed_rate.setValue(current_feed);
+                            submit = true;
+
                         }else {
                             HashMap<String,String> current_feed = new HashMap<>();
                             current_feed.put("no",Integer.toString(1));
@@ -93,13 +98,13 @@ public class FeedbackActivity extends AppCompatActivity {
                         for (DataSnapshot data : dataSnapshot.getChildren()){
                             Map<String,Object> map = (Map<String,Object>)data.getValue();
                             int confirm = Integer.parseInt(map.get("book").toString());
-                            int earn = Integer.parseInt(map.get("earn").toString());
+                            Float earn = Float.parseFloat(map.get("earn").toString());
                             confirm = confirm+1;
-                            earn = earn + Integer.parseInt(ride_info.getString("price",null));
+                            earn = earn + Float.parseFloat(ride_info.getString("price",null));
                             String key = data.getKey();
                             try {
                                 driver_acc.child(key).child("book").setValue(Integer.toString(confirm));
-                                driver_acc.child(key).child("earn").setValue(Integer.toString(earn));
+                                driver_acc.child(key).child("earn").setValue(Float.toString(earn));
                             }catch (Exception e){
                                 e.printStackTrace();
                             }
@@ -113,7 +118,7 @@ public class FeedbackActivity extends AppCompatActivity {
 
                 DatabaseReference resp=FirebaseDatabase.getInstance().getReference("Response/"+log_id.getString("id",null));
                 resp.removeValue();
-                DatabaseReference cus=FirebaseDatabase.getInstance().getReference("CustomerRequests/"+log_id.getString("id",null)+"/"+ride_info.getString("customer_id",null));
+                DatabaseReference cus=FirebaseDatabase.getInstance().getReference("CustomerRequests/"+log_id.getString("id",null)+"/"+id);
                 cus.removeValue();
                 SharedPreferences.Editor editor=log_id.edit();
                 editor.putString("ride","");
@@ -137,5 +142,88 @@ public class FeedbackActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
+    }
+
+    @Override
+    protected void onStop() {
+        if (!submit){
+            feed_rate.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()){
+                        Map<String,Object> feedback= (Map<String,Object>)dataSnapshot.getValue();
+                        int no = Integer.parseInt(feedback.get("no").toString());
+                        Float rate = Float.parseFloat(feedback.get("rate").toString());
+                        rate = rate * no;
+                        Float curr_rate = (Float) ((rate+5)/(no+1));
+
+                        HashMap<String,String> current_feed = new HashMap<>();
+                        current_feed.put("no",Integer.toString(no+1));
+                        current_feed.put("rate",curr_rate.toString());
+
+                        feed_rate.setValue(current_feed);
+                    }else {
+                        HashMap<String,String> current_feed = new HashMap<>();
+                        current_feed.put("no",Integer.toString(1));
+                        current_feed.put("rate",Float.toString(5));
+                        feed_rate.setValue(current_feed);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.i("OK","failed to create reference");
+                }
+            });
+            GregorianCalendar gregorianCalendar=new GregorianCalendar();
+            String date = String.valueOf(gregorianCalendar.get(GregorianCalendar.DAY_OF_MONTH));
+            String month = String.valueOf(gregorianCalendar.get(GregorianCalendar.MONTH)+1);
+            String year = String.valueOf(gregorianCalendar.get(GregorianCalendar.YEAR));
+            final String formateDate = year+"-"+month+"-"+date;
+
+            final DatabaseReference driver_acc = FirebaseDatabase.getInstance().getReference("Driver_Account_Info/"+log_id.getString("id",null)+"/"+formateDate);
+            driver_acc.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot data : dataSnapshot.getChildren()){
+                        Map<String,Object> map = (Map<String,Object>)data.getValue();
+                        int confirm = Integer.parseInt(map.get("book").toString());
+                        Float earn = Float.parseFloat(map.get("earn").toString());
+                        confirm = confirm+1;
+                        earn = earn + Float.parseFloat(ride_info.getString("price",null));
+                        String key = data.getKey();
+                        try {
+                            driver_acc.child(key).child("book").setValue(Integer.toString(confirm));
+                            driver_acc.child(key).child("earn").setValue(Float.toString(earn));
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+            DatabaseReference resp=FirebaseDatabase.getInstance().getReference("Response/"+log_id.getString("id",null));
+            resp.removeValue();
+            DatabaseReference cus=FirebaseDatabase.getInstance().getReference("CustomerRequests/"+log_id.getString("id",null)+"/"+id);
+            cus.removeValue();
+            SharedPreferences.Editor editor=log_id.edit();
+            editor.putString("ride","");
+            editor.commit();
+            Stack<SequenceModel> stack = new SequenceStack().getStack();
+            if (!stack.isEmpty()){
+                stack.pop();
+                startActivity(new Intent(FeedbackActivity.this,MapActivity.class));
+                finish();
+            }else {
+                DatabaseReference tripstatus= FirebaseDatabase.getInstance().getReference("Status/"+log_id.getString("id",null));
+                tripstatus.removeValue();
+                finish();
+            }
+        }
+        super.onStop();
     }
 }

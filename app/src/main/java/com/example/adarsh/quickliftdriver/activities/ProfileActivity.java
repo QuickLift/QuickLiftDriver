@@ -81,7 +81,7 @@ public class ProfileActivity extends AppCompatActivity {
                     map.put("phone",mobile.getText().toString());
                     map.put("email",email.getText().toString());
                     map.put("address",address.getText().toString());
-                    map.put("rate",Integer.toString(rate.getNumStars()));
+                    map.put("rate",Float.toString(rate.getRating()));
 
                     db.child(login.getString("id",null)).updateChildren(map);
                     finish();
@@ -137,5 +137,23 @@ public class ProfileActivity extends AppCompatActivity {
         });
         super.onResume();
 
+    }
+
+    public void edit_add(View view) {
+        mobile.setEnabled(false);
+        email.setEnabled(false);
+        address.setEnabled(true);
+    }
+
+    public void edit_email(View view) {
+        mobile.setEnabled(false);
+        email.setEnabled(true);
+        address.setEnabled(false);
+    }
+
+    public void edit_mobile(View view) {
+        mobile.setEnabled(true);
+        email.setEnabled(false);
+        address.setEnabled(false);
     }
 }

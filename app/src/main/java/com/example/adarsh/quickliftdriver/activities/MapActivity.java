@@ -114,6 +114,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     SequenceModel model;
     int seat = 0;
     Handler handler;
+    private static Runnable r;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +128,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
         setContentView(R.layout.activity_map);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        startService(new Intent(MapActivity.this,RequestService.class));
 
         Log.i("TAG","i am here");
         loc_pref = getSharedPreferences("location",Context.MODE_PRIVATE);
@@ -147,7 +150,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
         pick_name = (TextView)findViewById(R.id.c_pick_name);
         pick_address = (TextView)findViewById(R.id.c_pick_address);
-//        locate_name = (TextView)findViewById(R.id.c_locate_name);
         drop_location = (TextView)findViewById(R.id.c_drop_address);
         type = (TextView)findViewById(R.id.type);
         name = (TextView)findViewById(R.id.name);
@@ -180,32 +182,15 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         db= FirebaseDatabase.getInstance().getReference("CustomerRequests/"+log_id.getString("id",null));
         stopService(floatingViewIntent);
 
-        handler = new Handler();
-        final Runnable r = new Runnable() {
-            public void run() {
-                getCurrentLocation();
-                Location l = location;
-                onLocationChanged(l);
-//                status_db.child("0").setValue(latitude);
-//                status_db.child("1").setValue(longitude);
-                handler.postDelayed(this, 10000);
-            }
-        };
-
-        handler.postDelayed(r, 10000);
-
         tracktripstatus();
     }
 
     private void getCurrentLocation() {
-//        Toast.makeText(this, "Getting Current Location", Toast.LENGTH_SHORT).show();
         Log.i("TAG","Getting Current Location");
-//        mMap.clear();
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-//        Toast.makeText(this, "Current Location : "+location, Toast.LENGTH_SHORT).show();
         Log.i("TAG","Current Location : "+location);
         if (location != null) {
             longitude = location.getLongitude();
@@ -215,7 +200,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     .findFragmentById(R.id.map);
             mapFragment.getMapAsync(this);
         }else {
-//            Toast.makeText(this, "Current Location is null", Toast.LENGTH_SHORT).show();
             Log.i("TAG","Current Location is null");
 
             LocationManager lm = (LocationManager)getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
@@ -237,9 +221,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
     private void moveMap() {
 
-//        Toast.makeText(this, "Moving map to location : "+latitude+", "+longitude, Toast.LENGTH_SHORT).show();
-//        Log.i("TAG","Moving map to location : "+latitude+", "+longitude);
-
         mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(latitude,longitude))
                 .draggable(true)
@@ -251,19 +232,15 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
 
         if (log_id.getString("ride",null).equals("")) {
-//            Toast.makeText(this, "hi", Toast.LENGTH_SHORT).show();
+
             String userId = log_id.getString("id",null);
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("DriversAvailable/"+log_id.getString("type",null));
-//            ref.push().setValue("hello");
+
             GeoFire geoFire = new GeoFire(ref);
             geoFire.setLocation(userId, new GeoLocation(latitude,longitude));
         }
         else {
             String userId= log_id.getString("id",null);
-            DatabaseReference ref=FirebaseDatabase.getInstance().getReference("DriversWorking/"+log_id.getString("type",null));
-
-            GeoFire geoFire=new GeoFire(ref);
-            geoFire.setLocation(userId,new GeoLocation(latitude,longitude));
 
             DatabaseReference statref=FirebaseDatabase.getInstance().getReference("Status/");
 
@@ -274,8 +251,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-//        Toast.makeText(this, "Map Connected", Toast.LENGTH_SHORT).show();
-
         getCurrentLocation();
     }
 
@@ -303,7 +278,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                     Log.i("TAG","Child Seat : "+seat);
                     DatabaseReference seat_data = FirebaseDatabase.getInstance().getReference("DriversWorking/"+log_id.getString("type",null)+"/"+log_id.getString("id",null)+"/seat");
                     seat_data.setValue(Integer.toString(seat));
+                }else {
+                    DatabaseReference seat_data = FirebaseDatabase.getInstance().getReference("DriversWorking/"+log_id.getString("type",null)+"/"+log_id.getString("id",null)+"/seat");
+                    seat_data.setValue("full");
                 }
+
             }
 
             @Override
@@ -316,44 +295,45 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 Log.i("TAG","Child Removed : "+dataSnapshot.getKey());
                 String c_id = dataSnapshot.getKey();
                 if (!dataSnapshot.child("seat").getValue().toString().equalsIgnoreCase("full")){
-                    seat = seat+Integer.parseInt(dataSnapshot.child("seat").getValue().toString());
+                    seat = seat-Integer.parseInt(dataSnapshot.child("seat").getValue().toString());
                     Log.i("TAG","Child Seat : "+seat);
                     DatabaseReference seat_data = FirebaseDatabase.getInstance().getReference("DriversWorking/"+log_id.getString("type",null)+"/"+log_id.getString("id",null)+"/seat");
                     seat_data.setValue(Integer.toString(seat));
                 }
 
-                int size = stack.size();
+                //int size = stack.size();
                 ArrayList<SequenceModel> sequenceModels = new ArrayList<>();
-                if (size > 0){
-                    while(size > 0){
-                        Log.i("TAG","Stak pop : "+size);
+                if (stack.size() > 0){
+                    while(stack.size() > 0){
+                        Log.i("TAG","Stak pop : "+stack.size());
                         SequenceModel deleteModel =  stack.pop();
                         if (deleteModel.getId() != ride_info.getString("customer_id",null)){
                             sequenceModels.add(deleteModel);
 //                        Log.i("TAG","item for pushing : "+sequenceModels.size());
                         }
-                        size--;
                     }
-                }else {
-                    DatabaseReference tripstatus=FirebaseDatabase.getInstance().getReference("Status/"+log_id.getString("id",null));
-                    tripstatus.removeValue();
-                    DatabaseReference working = FirebaseDatabase.getInstance().getReference("DriversWorking/"+log_id.getString("type",null)+"/"+log_id.getString("id",null));
-                    working.removeValue();
-                    finish();
-                }
 
-                if (sequenceModels.size() > 0){
-                    for (int i = sequenceModels.size()-1; i >= 0;i--){
-                        Log.i("TAG","Stak push : "+i);
-                        stack.push(sequenceModels.get(i));
-                    }
-                    try{
-                        Thread.sleep(500);
-                    }catch(Exception e){
+                    if (sequenceModels.size() > 0){
+                        for (int i = sequenceModels.size()-1; i >= 0;i--){
+                            Log.i("TAG","Stak push : "+i);
+                            stack.push(sequenceModels.get(i));
+                        }
+                        try{
+                            Thread.sleep(500);
+                        }catch(Exception e){
 
+                        }
+                        sequenceModels.clear();
+                        startActivity(new Intent(MapActivity.this,MapActivity.class));
+                        finish();
+                    }else {
+                        DatabaseReference tripstatus=FirebaseDatabase.getInstance().getReference("Status/"+log_id.getString("id",null));
+                        tripstatus.removeValue();
+                        DatabaseReference working = FirebaseDatabase.getInstance().getReference("DriversWorking/"+log_id.getString("type",null)+"/"+log_id.getString("id",null));
+                        working.removeValue();
+                        finish();
                     }
-                    startActivity(new Intent(MapActivity.this,MapActivity.class));
-                    finish();
+
                 }else {
                     DatabaseReference tripstatus=FirebaseDatabase.getInstance().getReference("Status/"+log_id.getString("id",null));
                     tripstatus.removeValue();
@@ -378,69 +358,86 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         try{
             ride_info = getSharedPreferences("ride_info",MODE_PRIVATE);
 
-//            SharedPreferences.Editor editor = ride_info.edit();
-//            editor.putString("state","start");
-//            editor.commit();
             stack = new SequenceStack().getStack();
             Log.i("TAG","Stack Size in map : "+stack.size());
             //model = null;
             if (stack.size() > 0){
                 model=new SequenceModel();
                 model = stack.pop();
+
                 Log.i("TAG","Stack Size in map : "+stack.size());
-                DatabaseReference resp = FirebaseDatabase.getInstance().getReference("Response/"+ model.getId());
-                resp.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        String resp_value = dataSnapshot.child("resp").getValue().toString();
-                        Log.i("TAG","resp_value : "+resp_value);
-                        Log.i("TAG","model type : "+model.getType());
-                        if (resp_value.equalsIgnoreCase("Trip Started") && model.getType().equalsIgnoreCase("pick")){
-                            stack.push(model);
-                            stack.pop();
-                            startActivity(new Intent(MapActivity.this,MapActivity.class));
-                            finish();
-                        }else{
-                            stack.push(model);
-                            Log.i("TAG","Stack Size in map : "+stack.size());
+                try{
+                    final DatabaseReference resp = FirebaseDatabase.getInstance().getReference("Response/"+ model.getId());
+                    resp.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Log.i("TAG","Response Id where it crash : "+resp.getKey());
+                            String resp_value = null;
+                            try{
+                                resp_value = dataSnapshot.child("resp").getValue().toString();
+                            }catch (NullPointerException nee){
+                                startActivity(new Intent(MapActivity.this,MapActivity.class));
+                                finish();
+                            }
+                            if (resp==null){
+                                startActivity(new Intent(MapActivity.this,MapActivity.class));
+                                finish();
+                            }
+                            Log.i("TAG","resp_value : "+resp_value);
+                            Log.i("TAG","model type : "+model.getType());
+                            try{
+                                if (resp_value.equalsIgnoreCase("Trip Started") && model.getType().equalsIgnoreCase("pick") || resp_value.equalsIgnoreCase("Cancel") || resp_value.equalsIgnoreCase("Trip Ended")){
+                                    stack.push(model);
+                                    stack.pop();
+                                    startActivity(new Intent(MapActivity.this,MapActivity.class));
+                                    finish();
+                                }else{
+                                    stack.push(model);
+                                    Log.i("TAG","Stack Size in map : "+stack.size());
 
-                            db.child(model.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    db.child(model.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
 
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                                    Map<String,Object> map =(Map<String, Object>) dataSnapshot.getValue();
-
-                                    final SharedPreferences.Editor edit = ride_info.edit();
-                                    try{
-
-                                        edit.putString("accept",map.get("accept").toString());
-                                        edit.putString("customer_id",map.get("customer_id").toString());
-                                        edit.putString("d_lat",map.get("d_lat").toString());
-                                        edit.putString("d_lng",map.get("d_lng").toString());
-                                        edit.putString("destination",map.get("destination").toString());
-                                        edit.putString("en_lat",map.get("en_lat").toString());
-                                        edit.putString("en_lng",map.get("en_lng").toString());
-                                        edit.putString("otp",map.get("otp").toString());
-                                        edit.putString("price",map.get("price").toString());
-                                        edit.putString("seat",map.get("seat").toString());
-                                        edit.putString("source",map.get("source").toString());
-                                        edit.putString("st_lat",map.get("st_lat").toString());
-                                        edit.putString("st_lng",map.get("st_lng").toString());
-                                    }catch(NullPointerException ne){
-                                        Log.e("TAG","Error on line 424 : "+ne.getLocalizedMessage());
-//                                        startActivity(new Intent(MapActivity.this,MapActivity.class));
-//                                        finish();
-                                    }
-                                    DatabaseReference user = FirebaseDatabase.getInstance().getReference("Users/"+map.get("customer_id"));
-                                    user.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
-                                            Map<String,Object> userMap = (Map<String,Object>)dataSnapshot.getValue();
-                                            edit.putString("name",userMap.get("name").toString());
-                                            edit.putString("phone",userMap.get("phone").toString());
-                                            edit.putString("email",userMap.get("email").toString());
-                                            edit.commit();
+
+                                            Map<String,Object> map =(Map<String, Object>) dataSnapshot.getValue();
+
+                                            final SharedPreferences.Editor edit = ride_info.edit();
+                                            try{
+
+                                                edit.putString("accept",map.get("accept").toString());
+                                                edit.putString("customer_id",map.get("customer_id").toString());
+                                                edit.putString("d_lat",map.get("d_lat").toString());
+                                                edit.putString("d_lng",map.get("d_lng").toString());
+                                                edit.putString("destination",map.get("destination").toString());
+                                                edit.putString("en_lat",map.get("en_lat").toString());
+                                                edit.putString("en_lng",map.get("en_lng").toString());
+                                                edit.putString("otp",map.get("otp").toString());
+                                                edit.putString("price",map.get("price").toString());
+                                                edit.putString("seat",map.get("seat").toString());
+                                                edit.putString("source",map.get("source").toString());
+                                                edit.putString("st_lat",map.get("st_lat").toString());
+                                                edit.putString("st_lng",map.get("st_lng").toString());
+                                            }catch(NullPointerException ne){
+                                                Log.e("TAG","Error on line 424 : "+ne.getLocalizedMessage());
+//                                        startActivity(new Intent(MapActivity.this,MapActivity.class));
+//                                        finish();
+                                            }
+                                            DatabaseReference user = FirebaseDatabase.getInstance().getReference("Users/"+map.get("customer_id").toString());
+                                            user.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    Map<String,Object> userMap = (Map<String,Object>)dataSnapshot.getValue();
+                                                    edit.putString("name",userMap.get("name").toString());
+                                                    edit.putString("phone",userMap.get("phone").toString());
+                                                    edit.putString("email",userMap.get("email").toString());
+                                                    edit.commit();
+                                                }
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+
+                                                }
+                                            });
                                         }
                                         @Override
                                         public void onCancelled(DatabaseError databaseError) {
@@ -448,75 +445,38 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                         }
                                     });
                                 }
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
+                            }catch (NullPointerException neee){
+                                startActivity(new Intent(MapActivity.this,MapActivity.class));
+                                finish();
+                            }
 
-                                }
-                            });
+                            if (resp_value.equalsIgnoreCase("Trip Started") && model.getType().equalsIgnoreCase("drop")){
+                                pickup.setVisibility(View.GONE);
+                                drop.setVisibility(View.VISIBLE);
+                            }
                         }
-//                        if ((!resp_value.equalsIgnoreCase("Trip Started") && model.getType().equalsIgnoreCase("pick")) || (resp_value.equalsIgnoreCase("Trip Started") && !model.getType().equalsIgnoreCase("pick"))){
-//                            stack.push(model);
-//                            Log.i("TAG","Stack Size in map : "+stack.size());
-//                            db.child(model.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
-//
-//                                @Override
-//                                public void onDataChange(DataSnapshot dataSnapshot) {
-//                                    Map<String,Object> map =(Map<String, Object>) dataSnapshot.getValue();
-//
-//                                    final SharedPreferences.Editor edit = ride_info.edit();
-//                                    try{
-//
-//                                        edit.putString("accept",map.get("accept").toString());
-//                                        edit.putString("customer_id",map.get("customer_id").toString());
-//                                        edit.putString("d_lat",map.get("d_lat").toString());
-//                                        edit.putString("d_lng",map.get("d_lng").toString());
-//                                        edit.putString("destination",map.get("destination").toString());
-//                                        edit.putString("en_lat",map.get("en_lat").toString());
-//                                        edit.putString("en_lng",map.get("en_lng").toString());
-//                                        edit.putString("otp",map.get("otp").toString());
-//                                        edit.putString("price",map.get("price").toString());
-//                                        edit.putString("seat",map.get("seat").toString());
-//                                        edit.putString("source",map.get("source").toString());
-//                                        edit.putString("st_lat",map.get("st_lat").toString());
-//                                        edit.putString("st_lng",map.get("st_lng").toString());
-//                                    }catch(NullPointerException ne){
-//                                        Log.e("TAG","Error : "+ne.getLocalizedMessage());
-//                                        startActivity(new Intent(MapActivity.this,MapActivity.class));
-//                                        finish();
-//                                    }
-//                                    DatabaseReference user = FirebaseDatabase.getInstance().getReference("Users/"+map.get("customer_id"));
-//                                    user.addListenerForSingleValueEvent(new ValueEventListener() {
-//                                        @Override
-//                                        public void onDataChange(DataSnapshot dataSnapshot) {
-//                                            Map<String,Object> userMap = (Map<String,Object>)dataSnapshot.getValue();
-//                                            edit.putString("name",userMap.get("name").toString());
-//                                            edit.putString("phone",userMap.get("phone").toString());
-//                                            edit.putString("email",userMap.get("email").toString());
-//                                            edit.commit();
-//                                        }
-//                                        @Override
-//                                        public void onCancelled(DatabaseError databaseError) {
-//
-//                                        }
-//                                    });
-//                                }
-//                                @Override
-//                                public void onCancelled(DatabaseError databaseError) {
-//
-//                                }
-//                            });
-//                        }else {
-//                            stack.pop();
-//                            startActivity(new Intent(MapActivity.this,MapActivity.class));
-//                            finish();
-//                        }
-                    }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+                        }
+                    });
+                }catch (NullPointerException ne){
+                    db.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (!dataSnapshot.hasChild(model.getId())){
+                                startActivity(new Intent(MapActivity.this,MapActivity.class));
+                                finish();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
 
             }else {
                 Toast.makeText(this, "Stack is Empty", Toast.LENGTH_SHORT).show();
@@ -591,12 +551,15 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
     private void start_trip(){
         start_trip.setVisibility(View.GONE);
+        pickup.setVisibility(View.GONE);
+        pick_address.setVisibility(View.GONE);
         drop.setVisibility(View.VISIBLE);
     }
 
     private void drop_nav(){
         pickup.setVisibility(View.GONE);
-        dest_type.setVisibility(View.VISIBLE);
+        pick_address.setVisibility(View.GONE);
+        end_trip.setVisibility(View.VISIBLE);
         cancel.setVisibility(View.VISIBLE);
         cancel_btn.setVisibility(View.VISIBLE);
         drop.setVisibility(View.VISIBLE);
@@ -614,6 +577,20 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
     @Override
     protected void onResume() {
+        handler = new Handler();
+        r = new Runnable() {
+            public void run() {
+                getCurrentLocation();
+                Location l = location;
+                onLocationChanged(l);
+//                status_db.child("0").setValue(latitude);
+//                status_db.child("1").setValue(longitude);
+                handler.postDelayed(this, 10000);
+            }
+        };
+
+        handler.postDelayed(r, 10000);
+
         super.onResume();
 //        SequenceModel model = new SequenceModel();
 //        model.setLatLng(new LatLng(Double.parseDouble(ride_info.getString("en_lat",null)),Double.parseDouble(ride_info.getString("en_lng",null))));
@@ -641,6 +618,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     @Override
     protected void onStop() {
         googleApiClient.disconnect();
+//        handler.removeCallbacks(r);
+        if (handler != null){
+            handler.removeCallbacksAndMessages(null);
+        }
         super.onStop();
     }
 
@@ -870,10 +851,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 //                    marker_drop.remove();
 //                    marker_pick.remove();
                     erasePolylines();
-                    DatabaseReference ref=FirebaseDatabase.getInstance().getReference("DriversWorking/"+log_id.getString("type",null)+"/"+userId);
+//                    DatabaseReference ref=FirebaseDatabase.getInstance().getReference("DriversWorking/"+log_id.getString("type",null)+"/"+userId);
 
-                    GeoFire geoFire=new GeoFire(ref);
-                    geoFire.removeLocation(userId);
+//                    GeoFire geoFire=new GeoFire(ref);
+//                    geoFire.removeLocation(userId);
 
                     String userId = log_id.getString("id",null);
                     DatabaseReference dref = FirebaseDatabase.getInstance().getReference("DriversAvailable/"+log_id.getString("type",null));
@@ -1059,6 +1040,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             map.put("driver",log_id.getString("id",null));
             map.put("source",ride_info.getString("source",null));
             map.put("time",new Date().toString());
+            map.put("status","Completed");
 
             String key = rides.push().getKey();
             rides.child(key).setValue(map);
@@ -1078,13 +1060,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             startActivity(new Intent(this,FeedbackActivity.class));
             this.finish();
         }else if (id == cancel_btn.getId()){
-            SharedPreferences.Editor editor = ride_info.edit();
-            editor.putString("state","start");
-            editor.commit();
+//            SharedPreferences.Editor editor = ride_info.edit();
+//            editor.putString("state","start");
+//            editor.commit();
 //            cancel_trip();
 //            startActivity(new Intent(this,Welcome.class));
             startActivity(new Intent(MapActivity.this,RiderListActivity.class));
-           // finish();
+            finish();
         }
     }
 
@@ -1154,6 +1136,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
         //cancel_trip();
     }
 

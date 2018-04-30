@@ -8,7 +8,7 @@ public class Feed {
     int rejectedRideCount;
     int canceledRidesCount;
     int bookedRideCount;
-    int totalEarning;
+    Float totalEarning;
 
     public int getRejectedRideCount() {
         return rejectedRideCount;
@@ -34,11 +34,11 @@ public class Feed {
         this.bookedRideCount = bookedRideCount;
     }
 
-    public int getTotalEarning() {
+    public Float getTotalEarning() {
         return totalEarning;
     }
 
-    public void setTotalEarning(int totalEarning) {
+    public void setTotalEarning(Float totalEarning) {
         this.totalEarning = totalEarning;
     }
 }

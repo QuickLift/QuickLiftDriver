@@ -24,7 +24,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
@@ -36,6 +38,7 @@ public class RiderListActivity extends AppCompatActivity {
     private DatabaseReference request,response,users;
     private SharedPreferences log_id;
     private Stack<SequenceModel> stack;
+    private SharedPreferences ride_info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,7 @@ public class RiderListActivity extends AppCompatActivity {
         response = FirebaseDatabase.getInstance().getReference("Response");
         users = FirebaseDatabase.getInstance().getReference("Users");
         stack = new SequenceStack().getStack();
+        ride_info = getSharedPreferences("ride_info",MODE_PRIVATE);
 
         riders = new ArrayList<>();
         rider = (ListView)findViewById(R.id.rider_list);
@@ -128,6 +132,9 @@ public class RiderListActivity extends AppCompatActivity {
                     String key = data.getKey();
                     try {
                         driver_acc.child(key).child("cancel").setValue(Integer.toString(cancel));
+                        SharedPreferences.Editor editor = ride_info.edit();
+                        editor.putString("state","start");
+                        editor.commit();
                     }catch (Exception e){
                         e.printStackTrace();
                     }
@@ -139,42 +146,56 @@ public class RiderListActivity extends AppCompatActivity {
             }
         });
 
-
-//        getCurrentLocation();
-//        moveMap();
-//        stack.push(model);
         DatabaseReference resp=FirebaseDatabase.getInstance().getReference("Response/"+customer);
         resp.child("resp").setValue("Cancel");
         DatabaseReference cus=FirebaseDatabase.getInstance().getReference("CustomerRequests/"+log_id.getString("id",null)+"/"+customer);
         cus.removeValue();
-        SharedPreferences.Editor editor=log_id.edit();
-        editor.putString("ride","");
-        editor.commit();
-        int size = stack.size();
-        Log.i("TAG","Stak SIze : "+size);
-        ArrayList<SequenceModel> sequenceModels = new ArrayList<>();
-        for(int i = 0;i < size;i++){
-            Log.i("TAG","Stak pop : "+i);
-            SequenceModel deleteModel =  stack.pop();
-            if (deleteModel.getId() != customer){
-                sequenceModels.add(deleteModel);
-                Log.i("TAG","item for pushing : "+sequenceModels.size());
-            }
-        }
-        if (sequenceModels.size() > 0){
-            for (int i = sequenceModels.size()-1; i >= 0;i--){
-                Log.i("TAG","Stak push : "+i);
-                stack.push(sequenceModels.get(i));
-            }
-            startActivity(new Intent(RiderListActivity.this,MapActivity.class));
-            finish();
-        }else {
-            DatabaseReference tripstatus=FirebaseDatabase.getInstance().getReference("Status/"+log_id.getString("id",null));
-            tripstatus.removeValue();
-            DatabaseReference working = FirebaseDatabase.getInstance().getReference("DriversWorking/"+log_id.getString("type",null)+"/"+log_id.getString("id",null));
-            working.removeValue();
-            finish();
-        }
+
+        DatabaseReference rides = FirebaseDatabase.getInstance().getReference("Rides");
+
+        HashMap<String,Object> map= new HashMap<>();
+
+        map.put("amount",ride_info.getString("price",null));
+        map.put("customerid",ride_info.getString("customer_id",null));
+        map.put("destination",ride_info.getString("destination",null));
+        map.put("driver",log_id.getString("id",null));
+        map.put("source",ride_info.getString("source",null));
+        map.put("time",new Date().toString());
+        map.put("status","Canceled By Driver");
+
+        String key = rides.push().getKey();
+        rides.child(key).setValue(map);
+
+//        SharedPreferences.Editor editor=log_id.edit();
+//        editor.putString("ride","");
+//        editor.commit();
+//        int size = stack.size();
+//        Log.i("TAG","Stak SIze : "+size);
+//        ArrayList<SequenceModel> sequenceModels = new ArrayList<>();
+//        for(int i = 0;i < size;i++){
+//            Log.i("TAG","Stak pop : "+i);
+//            SequenceModel deleteModel =  stack.pop();
+//            if (!deleteModel.getId().equalsIgnoreCase(customer)){
+//                sequenceModels.add(deleteModel);
+//                Log.i("TAG","item for pushing : "+sequenceModels.size());
+//            }
+//        }
+//        if (sequenceModels.size() > 0){
+//            for (int i = sequenceModels.size()-1; i >= 0;i--){
+//                Log.i("TAG","Stak push : "+i);
+//                stack.push(sequenceModels.get(i));
+//            }
+//            startActivity(new Intent(RiderListActivity.this,MapActivity.class));
+//            finish();
+//        }else {
+//            DatabaseReference tripstatus=FirebaseDatabase.getInstance().getReference("Status/"+log_id.getString("id",null));
+//            tripstatus.removeValue();
+//            DatabaseReference working = FirebaseDatabase.getInstance().getReference("DriversWorking/"+log_id.getString("type",null)+"/"+log_id.getString("id",null));
+//            working.removeValue();
+//            finish();
+//        }
+        startActivity(new Intent(RiderListActivity.this,MapActivity.class));
+        finish();
     }
 
     class CustomAdapter extends BaseAdapter{
@@ -213,6 +234,7 @@ public class RiderListActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     cancel_trip(riders.get(position).getC_id());
+                    Log.i("OK","Id while cancel drive : "+riders.get(position).getC_id());
                 }
             });
 
@@ -223,7 +245,7 @@ public class RiderListActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 //        super.onBackPressed();
-//        startActivity(new Intent(RiderListActivity.this,MapActivity.class));
+        startActivity(new Intent(RiderListActivity.this,MapActivity.class));
         finish();
     }
 }

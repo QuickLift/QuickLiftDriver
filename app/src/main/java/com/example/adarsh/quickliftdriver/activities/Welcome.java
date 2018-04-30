@@ -87,6 +87,7 @@ public class Welcome extends AppCompatActivity implements Runnable
     CircleImageView image;
     String type = null;
     Bitmap photo;
+    LocationManager manager;
 
         @Override
         public void onBackPressed() {
@@ -113,6 +114,13 @@ public class Welcome extends AppCompatActivity implements Runnable
         setContentView(R.layout.activity_welcome);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        manager =  (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+
+                displayLocationSettingsRequest(getApplicationContext());
+            }
+
         log_id=getApplicationContext().getSharedPreferences("Login",MODE_PRIVATE);
         final SharedPreferences.Editor pref_editor=log_id.edit();
 
@@ -325,16 +333,17 @@ public class Welcome extends AppCompatActivity implements Runnable
     }
 
     private void getCurrentLocation() {
-        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
 
         if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 
             displayLocationSettingsRequest(getApplicationContext());
         }
-        GPSTracker gps = new GPSTracker(this);
+        GPSTracker gps = new GPSTracker(Welcome.this);
 
         // check if GPS enabled
         if (gps.canGetLocation()) {
+            Log.i("TAG","Getting location from GPS Tracker");
 
             double latitude = gps.getLatitude();
             double longitude = gps.getLongitude();
@@ -349,10 +358,11 @@ public class Welcome extends AppCompatActivity implements Runnable
             else {
                 String userId= log_id.getString("id",null);
                 DatabaseReference ref=FirebaseDatabase.getInstance().getReference("DriversWorking/"+log_id.getString("type",null));
-
-                GeoFire geoFire=new GeoFire(ref);
-                geoFire.setLocation(userId,new GeoLocation(latitude,longitude));
+//                GeoFire geoFire=new GeoFire(ref);
+//                geoFire.setLocation(userId,new GeoLocation(latitude,longitude));
             }
+        }else {
+            Log.i("TAG","False");
         }
     }
 
@@ -379,6 +389,7 @@ public class Welcome extends AppCompatActivity implements Runnable
             db.child(log_id.getString("id",null)).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    Log.i("TAG","Id : "+dataSnapshot.getKey());
                     if (dataSnapshot.getChildrenCount() > 0){
                         Map<String,Object> map=(Map<String, Object>) dataSnapshot.getValue();
 

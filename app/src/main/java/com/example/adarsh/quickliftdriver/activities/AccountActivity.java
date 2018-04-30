@@ -63,10 +63,10 @@ public class AccountActivity extends AppCompatActivity {
         myCalendar = Calendar.getInstance();
         from_date= (EditText) findViewById(R.id.from_date);
         from_date.setEnabled(false);
-        from_date.setFocusable(false);
+        //from_date.setFocusable(false);
 
         to_date = (EditText)findViewById(R.id.to_date);
-        to_date.setFocusable(false);
+        //to_date.setFocusable(false);
         to_date.setEnabled(false);
 
         listView=(ListView)findViewById(R.id.list);
@@ -107,6 +107,8 @@ public class AccountActivity extends AppCompatActivity {
     // load button
     @SuppressWarnings("deprecation")
     public void load_btn(View view) {
+        from_date.setError(null);
+        to_date.setError(null);
         if (validate()){
             if(from_date.getText().toString().isEmpty() &&to_date.getText().toString().isEmpty()){
                 Toast.makeText(this, "Please enter your field", Toast.LENGTH_SHORT).show();
@@ -131,7 +133,7 @@ public class AccountActivity extends AppCompatActivity {
                                     //set all values in feed class object;
                                     feed.setBookedRideCount(Integer.parseInt(feedMap.get("book")));
                                     feed.setCanceledRidesCount(Integer.parseInt(feedMap.get("cancel")));
-                                    feed.setTotalEarning(Integer.parseInt(feedMap.get("earn")));
+                                    feed.setTotalEarning(Float.parseFloat(feedMap.get("earn")));
                                     feed.setRejectedRideCount(Integer.parseInt(feedMap.get("reject")));
                                 }
                                 /**
